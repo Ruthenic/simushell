@@ -6,3 +6,4 @@ Run by typing 'dotnet run' in CLI in SimuShell/SimuShell, Run releases by typing
 
 # Windows?
 No
+Due to the difference in directory structures, it would be tough to focus on supporting to operating systems at the same time, so we only support Linux for the time being.
