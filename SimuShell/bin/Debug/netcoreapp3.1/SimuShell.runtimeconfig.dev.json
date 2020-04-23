@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "/home/ruthenic/.dotnet/store/|arch|/|tfm|",
+      "/home/ruthenic/.nuget/packages"
+    ]
+  }
+}
