@@ -13,7 +13,7 @@ namespace SimuShell
             string ice = "0"; // is command entered
             //manual (yes this is inconvinent i know this is a work in progress)
             string manual = "This is the command reference. \n CD - Change directory or drive. Place dir. or drive letter behind 'CD' to switch drives. Place '..' behind 'CD' to go back a directory. \n dir - print current directory \n list - list all files and folders in current directory \n credits - displays where I've 'been inspired by' X  thing.";
-            Console.WriteLine("Welcome to HackShell. Type 'man' for manual.\n HackShell and all affiliated names are copyright of Ruthenic");
+            Console.WriteLine("Welcome to SimuShell. Type 'man' for manual.");
             for (int i = 0; i < 5;)
             {
 
