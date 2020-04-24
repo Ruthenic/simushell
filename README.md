@@ -2,7 +2,7 @@
 Simulation of a Linux-like shell for Linux with filesystem access
 
 # Starting the program
-Run by typing 'dotnet run' in CLI in SimuShell/SimuShell, Run releases by typing 'dotnet SimuShell.dll' 'mono SimuShell.dll' or 'mono Program.exe'
+Run by typing 'dotnet run' in CLI in SimuShell/SimuShell, Run releases by typing 'dotnet SimuShell.dll' 'mono SimuShell.dll' or 'mono Program.exe' (Warning: Program.exe may not be up to date, and only works with mono to my testing)
 
 # Windows?
 No.
