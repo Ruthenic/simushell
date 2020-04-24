@@ -94,6 +94,7 @@ namespace SimuShell
                     string to_print = currentcommand.Replace("echo ", "");
                     Console.WriteLine(to_print);
                 }
+                
             }
         }
     }
