@@ -10,7 +10,6 @@ namespace SimuShell
             //init all var
             string currentdir = "/";
             string currentcommand;
-            string ice = "0"; // is command entered
             //manual (yes this is inconvinent i know this is a work in progress)
             string manual = "This is the command reference. \n CD - Change directory or drive. Place dir. or drive letter behind 'CD' to switch drives. Place '..' behind 'CD' to go back a directory. \n dir - print current directory \n list - list all files and folders in current directory \n credits - displays where I've 'been inspired by' X  thing.";
             Console.WriteLine("Welcome to SimuShell. Type 'man' for manual.");
@@ -26,7 +25,6 @@ namespace SimuShell
                 if (currentcommand == "dir")
                 {
                     Console.WriteLine(currentdir);
-                    ice = "1";
                 }
                 if (currentcommand == "list")
                 {
@@ -41,7 +39,6 @@ namespace SimuShell
                     {
                         Console.WriteLine(name, " ");
                     }
-                    ice = "1";
                 }
                  if (currentcommand.Contains("cd"))
                 {
@@ -67,7 +64,6 @@ namespace SimuShell
 
                     }
                     currentdir = newpath;
-                    ice = "1";
                     if (!currentdir.Contains("/")){
                     
                         currentdir = "/";
@@ -76,13 +72,11 @@ namespace SimuShell
                 if (currentcommand == "man")
                 {
                     Console.WriteLine(manual);
-                    ice = "1";
                 }
 
                 if (currentcommand == "credits")
                 {
                     Console.WriteLine("");
-                    ice = "1";
                 }
 
                 if (currentcommand == "exit")
@@ -94,7 +88,6 @@ namespace SimuShell
                     string to_print = currentcommand.Replace("echo ", "");
                     Console.WriteLine(to_print);
                 }
-                
             }
         }
     }
