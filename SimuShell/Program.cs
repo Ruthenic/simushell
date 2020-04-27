@@ -11,7 +11,7 @@ namespace SimuShell
             string currentdir = "/";
             string currentcommand;
             //manual (yes this is inconvinent i know this is a work in progress)
-            string manual = "This is the command reference. \n CD - Change directory or drive. Place dir. or drive letter behind 'CD' to switch drives. Place '..' behind 'CD' to go back a directory. \n dir - print current directory \n list - list all files and folders in current directory \n credits - displays where I've 'been inspired by' X  thing.";
+            string manual = "This is the command reference. \n CD - Change directory or drive. Place dir. or drive letter behind 'CD' to switch drives. Place '..' behind 'CD' to go back a directory. \n dir - print current directory \n list - list all files and folders in current directory \n man - print this \n exit - close SimuShell \n echo - print whatever is behind it";
             Console.WriteLine("Welcome to SimuShell. Type 'man' for manual.");
             for (int i = 0; i < 5;)
             {
@@ -73,12 +73,6 @@ namespace SimuShell
                 {
                     Console.WriteLine(manual);
                 }
-
-                if (currentcommand == "credits")
-                {
-                    Console.WriteLine("");
-                }
-
                 if (currentcommand == "exit")
                 {
                     break;
