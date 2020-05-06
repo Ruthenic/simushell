@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-
+using System.Linq;
 
 namespace SimuShell
 {
@@ -9,10 +9,10 @@ namespace SimuShell
         public static string currentdir = "/";
         
         
-        
         static void Interpret()
         {
             string currentcommand;
+            
             //ask for command
             Console.Write(currentdir);
             Console.Write(">");
@@ -20,6 +20,7 @@ namespace SimuShell
             CommandExec(currentcommand);
                 
         }
+
         public static void PrintValues(String[] myArr)
         {
             foreach (String i in myArr)
@@ -30,9 +31,6 @@ namespace SimuShell
         }
         public static void CommandExec(String currentcommand)
         {
-            //public declaration doesn't appear to work in if statements or at all without being static static(or i am dumb and that is intended i dunno)
-            bool HasFallbackOccured = false;
-            string prevpath = currentdir;
             if (currentcommand == "dir")
             {
                 Console.WriteLine(currentdir);
@@ -53,6 +51,7 @@ namespace SimuShell
             }
                 if (currentcommand.Contains("cd"))
             {
+                string oldpath = currentdir;
                 string newpath = currentcommand.Replace("cd ", "");
                 if (newpath.Contains(".."))
                 {
@@ -77,13 +76,13 @@ namespace SimuShell
                         }
                         else
                         {
-                            Console.WriteLine("Not a valid directory; Fallback to previous");
-                            currentdir = prevpath;
-                            HasFallbackOccured = true;
+                            Console.WriteLine("Not a valid directory; Fallback to default");
+                            currentdir = oldpath;
                         }
                     }
 
                 }
+                currentdir = newpath;
                 if (!currentdir.Contains("/")){
                 
                     currentdir = "/";
@@ -92,7 +91,6 @@ namespace SimuShell
                 {
                     currentdir = "/";
                 }
-                if (HasFallbackOccured == false){currentdir = newpath;}
             }
             if (currentcommand == "man")
             {
@@ -106,33 +104,21 @@ namespace SimuShell
                 PrintValues(man);
 
             }
-            if (currentcommand == "setlist"){
-                string[] setlist = new string [6]; // index must match amount of settings availible to edit with setedit
-                setlist[0] = "disable telemetry; DISTEL";
-                setlist[1] = "enable launching programs; LAUNCHER";
-                PrintValues(setlist);
-            }
-            if (currentcommand.Contains("setedit ")){
-                string setting = currentcommand.Replace("setedit ", "");
-            }
             if (currentcommand == "exit")
             {
-                System.Environment.Exit(69);
+                System.Environment.Exit(1);
             }
             if (currentcommand.Contains("echo"))
             {
                 string to_print = currentcommand.Replace("echo ", "");
                 Console.WriteLine(to_print);
             }
-            
             Interpret();
         }
         static void Main(){
             Console.WriteLine("Welcome to SimuShell. Type 'man' for manual.");
             Interpret();
         }
-        public static void TestExternProgram(){
-            Console.WriteLine("Test1 Works!");
-        }
+
     }
 }
