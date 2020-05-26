@@ -8,3 +8,6 @@ Updated builds can be found under ruthenic/SimuShell/SimuShell/Program.exe (mono
 # Windows?
 No.
 Due to the difference in directory structures, it would be tough to focus on supporting to operating systems at the same time, so we only support Linux for the time being.
+
+# Included Libraries
+SUCC by JimmyCushnie: https://github.com/JimmyCushnie/SUCC
