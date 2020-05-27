@@ -6,7 +6,7 @@ namespace SimuShell
 {
     static class Program
     {
-        static DataFile Config = new DataFile("Config");
+        static DataFile Config = new DataFile("Config"); //init SUCC
         public static string currentdir = "/";
         
         
@@ -107,15 +107,6 @@ namespace SimuShell
                 PrintValues(man);
 
             }
-            if (currentcommand == "setlist"){
-                string[] setlist = new string [6]; // index must match amount of settings availible to edit with setedit
-                setlist[0] = "disable telemetry; DISTEL";
-                setlist[1] = "enable launching programs; LAUNCHER";
-                PrintValues(setlist);
-            }
-            if (currentcommand.Contains("setedit ")){
-                string setting = currentcommand.Replace("setedit ", "");
-            }
             if (currentcommand == "exit")
             {
                 System.Environment.Exit(69);
@@ -130,10 +121,7 @@ namespace SimuShell
         }
         static void Main(){
             Console.WriteLine("Welcome to SimuShell. Type 'man' for manual.");
-            Config.Set("test", 1234);
-            int TEST = Config.Get<int>("test");
-            TEST = TEST + 0;
-            Console.WriteLine(TEST);
+            
             // KEEP AT END, AFTER ANY SUCC INITIALIZATION
             Interpret();
 
@@ -141,6 +129,11 @@ namespace SimuShell
         }
         public static void TestExternProgram(){
             Console.WriteLine("Test1 Works!");
+        }
+
+        public static void conf_prg()
+        {
+            
         }
     }
 }
