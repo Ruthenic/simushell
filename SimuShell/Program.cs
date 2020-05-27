@@ -130,10 +130,13 @@ namespace SimuShell
         }
         static void Main(){
             Console.WriteLine("Welcome to SimuShell. Type 'man' for manual.");
+            Config.Set("test", 1234);
+            int TEST = Config.Get<int>("test");
+            TEST = TEST + 0;
+            Console.WriteLine(TEST);
+            // KEEP AT END, AFTER ANY SUCC INITIALIZATION
             Interpret();
-            Config.Set("example value", 1234);
-            int exampleValue = Config.Get<int>("example value");
-            Console.WriteLine(exampleValue);
+
             
         }
         public static void TestExternProgram(){
