@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-
+using SUCC;
 
 namespace SimuShell
 {

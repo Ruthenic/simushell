@@ -1,0 +1,492 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SUCC</name>
+    </assembly>
+    <members>
+        <member name="P:SUCC.Abstractions.IDataFileOnDisk.FilePath">
+            <summary> The absolute path of the file this object corresponds to. </summary>
+        </member>
+        <member name="P:SUCC.Abstractions.IDataFileOnDisk.FileName">
+            <summary> The name of this file on disk (without the file path or extension) </summary>
+        </member>
+        <member name="P:SUCC.Abstractions.IDataFileOnDisk.SizeOnDisk">
+            <summary> Size of this file on disk in bytes. If there is unsaved data in memory it will not be counted. </summary>
+        </member>
+        <member name="P:SUCC.Abstractions.IDataFileOnDisk.AutoReload">
+            <summary> If true, the DataFile will automatically reload when the file changes on disk. If false, you can still call ReloadAllData() manually. </summary>
+        </member>
+        <member name="E:SUCC.Abstractions.IDataFileOnDisk.OnAutoReload">
+            <summary> Invoked every time the file is auto-reloaded. This only happens when AutoReload is set to true. </summary>
+        </member>
+        <member name="T:SUCC.Abstractions.ReadableDataFile">
+            <summary>
+            A SUCC file that can be read from.
+            </summary>
+        </member>
+        <member name="M:SUCC.Abstractions.ReadableDataFile.GetSavedText">
+            <summary> Load the file text from wherever you're storing it </summary>
+        </member>
+        <member name="M:SUCC.Abstractions.ReadableDataFile.ReloadAllData">
+            <summary> Reloads the data stored on disk into this object. </summary>
+        </member>
+        <member name="M:SUCC.Abstractions.ReadableDataFile.GetRawText">
+            <summary> gets the data as it appears in file </summary>
+        </member>
+        <member name="M:SUCC.Abstractions.ReadableDataFile.GetRawLines">
+            <summary> gets the data as it appears in file, as an array of strings (one for each line) </summary>
+        </member>
+        <member name="M:SUCC.Abstractions.ReadableDataFile.GetTopLevelKeysInOrder">
+            <summary> returns all top level keys in the file, in the order they appear in the file. </summary>
+        </member>
+        <member name="P:SUCC.Abstractions.ReadableDataFile.TopLevelKeys">
+            <summary> this is faster than GetTopLevelKeysInOrder() but the keys may not be in the order they appear in the file </summary>
+        </member>
+        <member name="M:SUCC.Abstractions.ReadableDataFile.KeyExists(System.String)">
+            <summary> whether a top-level key exists in the file </summary>
+        </member>
+        <member name="M:SUCC.Abstractions.ReadableDataFile.KeyExistsAtPath(System.String[])">
+            <summary> whether a key exists in the file at a nested path </summary>
+        </member>
+        <member name="M:SUCC.Abstractions.ReadableDataFile.Get``1(System.String,``0)">
+            <summary> Get some data from the file, or return a default value if the data does not exist </summary>
+            <param name="key"> what the data is labeled as within the file </param>
+            <param name="defaultValue"> if the key does not exist in the file, this value is returned instead </param>
+        </member>
+        <member name="M:SUCC.Abstractions.ReadableDataFile.GetNonGeneric(System.Type,System.String,System.Object)">
+            <summary> Non-generic version of Get. You probably want to use Get. </summary>
+            <param name="type"> the type to get the data as </param>
+            <param name="key"> what the data is labeled as within the file </param>
+            <param name="defaultValue"> if the key does not exist in the file, this value is returned instead </param>
+        </member>
+        <member name="M:SUCC.Abstractions.ReadableDataFile.GetAtPath``1(``0,System.String[])">
+            <summary> 
+            Like Get but works for nested paths instead of just the top level of the file 
+            </summary>
+        </member>
+        <member name="M:SUCC.Abstractions.ReadableDataFile.GetAtPathNonGeneric(System.Type,System.Object,System.String[])">
+            <summary>
+            Non-generic version of GetAtPath. You probably want to use GetAtPath.
+            </summary>
+        </member>
+        <member name="M:SUCC.Abstractions.ReadableDataFile.GetAsObject``1">
+            <summary> Interpret this file as an object of type T, using that type's fields and properties as top-level keys. </summary>
+        </member>
+        <member name="M:SUCC.Abstractions.ReadableDataFile.GetAsObjectNonGeneric(System.Type)">
+            <summary> Non-generic version of GetAsObject. You probably wantto use GetAsObject. </summary>
+            <param name="type"> the type to get this object as </param>
+        </member>
+        <member name="M:SUCC.Abstractions.ReadableDataFile.GetAsDictionary``2">
+            <summary> Interpret this file as a dictionary. Top-level keys in the file are interpreted as keys in the dictionary. </summary>
+            <remarks> TKey must be a Base Type </remarks>
+        </member>
+        <member name="T:SUCC.Abstractions.ReadableWritableDataFile">
+            <summary>
+            A SUCC file that can be both read from and written to.
+            </summary>
+        </member>
+        <member name="F:SUCC.Abstractions.ReadableWritableDataFile.Style">
+            <summary> Rules for how to format new data saved to this file </summary>
+        </member>
+        <member name="P:SUCC.Abstractions.ReadableWritableDataFile.AutoSave">
+            <summary> If true, the DataFile will automatically save changes to disk with each Get or Set. If false, you must call SaveAllData() manually. </summary>
+            <remarks> Be careful with this. You do not want to accidentally be writing to a user's disk at 1000MB/s for 3 hours. </remarks>
+        </member>
+        <member name="M:SUCC.Abstractions.ReadableWritableDataFile.#ctor(System.Boolean,SUCC.FileStyle)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SUCC.Abstractions.ReadableWritableDataFile.SetSavedText(System.String)">
+            <summary> Save the file text to wherever you're storing it </summary>
+        </member>
+        <member name="M:SUCC.Abstractions.ReadableWritableDataFile.SaveAllData">
+            <summary> Serializes the data in this object to the file on disk. </summary>
+        </member>
+        <member name="M:SUCC.Abstractions.ReadableWritableDataFile.Get``1(System.String,``0)">
+            <summary> Get some data from the file, saving a new value if the data does not exist </summary>
+            <param name="key"> what the data is labeled as within the file </param>
+            <param name="defaultValue"> if the key does not exist in the file, this value is saved there and returned </param>
+        </member>
+        <member name="M:SUCC.Abstractions.ReadableWritableDataFile.GetNonGeneric(System.Type,System.String,System.Object)">
+            <summary> Non-generic version of Get. You probably want to use Get. </summary>
+            <param name="type"> the type to get the data as </param>
+            <param name="key"> what the data is labeled as within the file </param>
+            <param name="DefaultValue"> if the key does not exist in the file, this value is saved there and returned </param>
+        </member>
+        <member name="M:SUCC.Abstractions.ReadableWritableDataFile.Set``1(System.String,``0)">
+            <summary> Save data to the file </summary>
+            <param name="key"> what the data is labeled as within the file </param>
+            <param name="value"> the value to save </param>
+        </member>
+        <member name="M:SUCC.Abstractions.ReadableWritableDataFile.SetNonGeneric(System.Type,System.String,System.Object)">
+            <summary> Non-generic version of Set. You probably want to use Set. </summary>
+            <param name="type"> the type to save the data as </param>
+            <param name="key"> what the data is labeled as within the file </param>
+            <param name="value"> the value to save </param>
+        </member>
+        <member name="M:SUCC.Abstractions.ReadableWritableDataFile.GetAtPathNonGeneric(System.Type,System.Object,System.String[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:SUCC.Abstractions.ReadableWritableDataFile.SetAtPath``1(``0,System.String[])">
+            <summary> Like Set but works for nested paths instead of just the top level of the file </summary>
+        </member>
+        <member name="M:SUCC.Abstractions.ReadableWritableDataFile.SetAtPathNonGeneric(System.Type,System.Object,System.String[])">
+            <summary> Non-generic version of SetAtPath. You probably want to use SetAtPath. </summary>
+        </member>
+        <member name="M:SUCC.Abstractions.ReadableWritableDataFile.DeleteKey(System.String)">
+            <summary> Remove a top-level key and all its data from the file </summary>
+        </member>
+        <member name="M:SUCC.Abstractions.ReadableWritableDataFile.SaveAsObject``1(``0)">
+            <summary> Save this file as an object of type T, using that type's fields and properties as top-level keys. </summary>
+        </member>
+        <member name="M:SUCC.Abstractions.ReadableWritableDataFile.SaveAsObjectNonGeneric(System.Type,System.Object)">
+            <summary> Non-generic version of SaveAsObject. You probably want to use SaveAsObject. </summary>
+            <param name="type"> what type to save this object as </param>
+            <param name="savethis"> the object to save </param>
+        </member>
+        <member name="M:SUCC.Abstractions.ReadableWritableDataFile.SaveAsDictionary``2(System.Collections.Generic.IDictionary{``0,``1})">
+            <summary> Save this file as a dictionary, using the dictionary's keys as top-level keys in the file. </summary>
+            <remarks> TKey must be a Base Type </remarks>
+        </member>
+        <member name="T:SUCC.DataFile">
+            <summary>
+            Represents a SUCC file in system storage.
+            </summary>
+        </member>
+        <member name="M:SUCC.DataFile.#ctor(System.String,System.String,System.Boolean,System.Boolean)">
+            <summary>
+            Creates a new DataFile object corresponding to a SUCC file in system storage.
+            </summary>
+            <param name="path"> the path of the file. Can be either absolute or relative to the default path. </param>
+            <param name="defaultFileText"> optionally, if there isn't a file at the path, one can be created from the text supplied here. </param>
+            <param name="autoSave"> if true, the file will automatically save changes to disk with each Get() or Set(). Otherwise, you must call SaveAllData() manually. </param>
+            <param name="autoReload"> if true, the DataFile will automatically reload when the file changes on disk. </param>
+        </member>
+        <member name="M:SUCC.DataFile.#ctor(System.String,SUCC.FileStyle,System.String,System.Boolean,System.Boolean)">
+            <summary>
+            Creates a new DataFile object corresponding to a SUCC file in system storage, with the option to have a custom FileStyle.
+            </summary>
+            <param name="path"> the path of the file. Can be either absolute or relative to the default path. </param>
+            <param name="style"> the rules for how this file styles newly saved data </param>
+            <param name="defaultFileText"> optionally, if there isn't a file at the path, one can be created from the text supplied here. </param>
+            <param name="autoSave"> if true, the DataFile will automatically save changes to disk with each Get or Set. Otherwise, you must call SaveAllData() manually. </param>
+            <param name="autoReload"> if true, the DataFile will automatically reload when the file changes on disk. </param>
+        </member>
+        <member name="M:SUCC.DataFile.GetSavedText">
+            <inheritdoc/>
+        </member>
+        <member name="M:SUCC.DataFile.SetSavedText(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="P:SUCC.DataFile.FilePath">
+            <inheritdoc/>
+        </member>
+        <member name="P:SUCC.DataFile.FileName">
+            <inheritdoc/>
+        </member>
+        <member name="P:SUCC.DataFile.SizeOnDisk">
+            <inheritdoc/>
+        </member>
+        <member name="E:SUCC.DataFile.OnAutoReload">
+            <inheritdoc/>
+        </member>
+        <member name="P:SUCC.DataFile.AutoReload">
+            <inheritdoc/>
+        </member>
+        <member name="T:SUCC.MemoryFiles.MemoryDataFile">
+            <summary>
+            A read-only version of DataFile. Data can be read from disk, but not saved to disk.
+            </summary>
+        </member>
+        <member name="M:SUCC.MemoryFiles.MemoryDataFile.#ctor">
+            <summary>
+            Creates an empty DataFile in memory.
+            </summary>
+        </member>
+        <member name="M:SUCC.MemoryFiles.MemoryDataFile.#ctor(System.String,System.Boolean)">
+            <summary>
+            Creates a DataFile in memory with some preexisting SUCC content.
+            </summary>
+        </member>
+        <member name="M:SUCC.MemoryFiles.MemoryDataFile.#ctor(System.String,SUCC.FileStyle,System.Boolean)">
+            <summary>
+            Creates a DataFile in memory with some preexisting SUCC content and a custom FileStyle.
+            </summary>
+        </member>
+        <member name="M:SUCC.MemoryFiles.MemoryDataFile.GetSavedText">
+            <inheritdoc/>
+        </member>
+        <member name="M:SUCC.MemoryFiles.MemoryDataFile.SetSavedText(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SUCC.MemoryFiles.MemoryDataFile.ConvertToFileOnDisk(System.String,System.Boolean)">
+            <summary>
+            Saves the contents of this MemoryDataFile to disk and returns a disk DataFile corresponding to the new file.
+            </summary>
+            <param name="relativeOrAbsolutePath"> The path of the new file. </param>
+            <param name="overwrite"> If this is false, don't save the data if the file already exists on disk. </param>
+            <returns> Null if overwrite was set to false and a file already existed </returns>
+        </member>
+        <member name="T:SUCC.MemoryFiles.MemoryReadOnlyDataFile">
+            <summary>
+            A read-only version of DataFile. Data can be read from disk, but not saved to disk.
+            </summary>
+        </member>
+        <member name="M:SUCC.MemoryFiles.MemoryReadOnlyDataFile.#ctor">
+            <summary>
+            Creates an empty ReadOnlyDataFile in memory.
+            </summary>
+            <remarks> why would you do this? </remarks>
+        </member>
+        <member name="M:SUCC.MemoryFiles.MemoryReadOnlyDataFile.#ctor(System.String)">
+            <summary>
+            Creates a ReadOnlyDataFile in memory with some preexisting SUCC content.
+            </summary>
+        </member>
+        <member name="M:SUCC.MemoryFiles.MemoryReadOnlyDataFile.GetSavedText">
+            <inheritdoc/>
+        </member>
+        <member name="M:SUCC.MemoryFiles.MemoryReadOnlyDataFile.ConvertToFileOnDisk(System.String,System.Boolean)">
+            <summary>
+            Saves the contents of this MemoryDataFile to disk and returns a disk DataFile corresponding to the new file.
+            </summary>
+            <param name="relativeOrAbsolutePath"> The path of the new file. </param>
+            <param name="overwrite"> If this is false, don't save the data if the file already exists on disk. </param>
+            <returns> Null if overwrite was set to false and a file already existed </returns>
+        </member>
+        <member name="T:SUCC.ReadOnlyDataFile">
+            <summary>
+            A read-only version of DataFile. Data can be read from disk, but not saved to disk.
+            </summary>
+        </member>
+        <member name="M:SUCC.ReadOnlyDataFile.#ctor(System.String,System.String,System.Boolean)">
+            <summary>
+            Creates a new ReadOnlyDataFile object corresponding to a SUCC file in system storage.
+            </summary>
+            <param name="path"> the path of the file. Can be either absolute or relative to the default path. </param>
+            <param name="defaultFileText"> optionally, if there isn't a file at the path, one can be created from the text supplied here. </param>
+            <param name="autoReload"> if true, the DataFile will automatically reload when the file changes on disk. </param>
+        </member>
+        <member name="M:SUCC.ReadOnlyDataFile.GetSavedText">
+            <inheritdoc/>
+        </member>
+        <member name="P:SUCC.ReadOnlyDataFile.FilePath">
+            <inheritdoc/>
+        </member>
+        <member name="P:SUCC.ReadOnlyDataFile.FileName">
+            <inheritdoc/>
+        </member>
+        <member name="P:SUCC.ReadOnlyDataFile.SizeOnDisk">
+            <inheritdoc/>
+        </member>
+        <member name="E:SUCC.ReadOnlyDataFile.OnAutoReload">
+            <inheritdoc/>
+        </member>
+        <member name="P:SUCC.ReadOnlyDataFile.AutoReload">
+            <inheritdoc/>
+        </member>
+        <member name="T:SUCC.FileStyle">
+            <summary>
+            Rules for various aspects of how generated SUCC data is formatted.
+            </summary>
+            <remarks>
+            This only affects new data. If SUCC is modifying existing data, it will do its best to keep the formatting intact.
+            </remarks>
+        </member>
+        <member name="P:SUCC.FileStyle.Default">
+            <summary>
+            If you do not specify a FileStyle when creating a DataFile, this will be used.
+            </summary>
+        </member>
+        <member name="M:SUCC.FileStyle.#ctor">
+            <summary>
+            Creates a new FileStyle.
+            </summary>
+        </member>
+        <member name="P:SUCC.FileStyle.AlwaysQuoteStrings">
+            <summary>
+            SUCC strings can optionally be surrounded by "quotes". If this is true, they will be quoted even when not necessary.
+            </summary>
+        </member>
+        <member name="P:SUCC.FileStyle.AlwaysArrayDictionaries">
+            <summary>
+            SUCC can store dictionaries as KeyValuePair arrays if the key type is complex. If this is true, dictionaries will always be stored like that.
+            </summary>
+        </member>
+        <member name="P:SUCC.FileStyle.BoolStyle">
+            <summary>
+            SUCC can read booleans in several different ways. The BoolStyle specifies which of those ways to save them in.
+            </summary>
+        </member>
+        <member name="P:SUCC.FileStyle.EnumStyle">
+            <summary>
+            SUCC can read enums in a couple different ways. The EnumStyle specifies which of those ways to save them in.
+            </summary>
+        </member>
+        <member name="P:SUCC.FileStyle.IndentationInterval">
+            <summary>
+            The number of spaces used to indent a child line under its parent. Must be at least 1.
+            </summary>
+        </member>
+        <member name="P:SUCC.FileStyle.SpacesAfterColon">
+            <summary>
+            The number of spaces between the colon and the value in a key node. Must be at least 0.
+            </summary>
+        </member>
+        <member name="P:SUCC.FileStyle.SpacesAfterDash">
+            <summary>
+            The number of spaces between the dash and the value in a list node. Must be at least 0.
+            </summary>
+        </member>
+        <member name="T:SUCC.BoolStyle">
+            <summary>
+            Different options for how to save boolean values
+            </summary>
+        </member>
+        <member name="F:SUCC.BoolStyle.true_false">
+            <summary> save true as "true" and false as "false" </summary>
+        </member>
+        <member name="F:SUCC.BoolStyle.on_off">
+            <summary> save true as "on" and false as "off" </summary>
+        </member>
+        <member name="F:SUCC.BoolStyle.yes_no">
+            <summary> save true as "yes" and false as "no" </summary>
+        </member>
+        <member name="F:SUCC.BoolStyle.y_n">
+            <summary> save true as "y" and false as "n" </summary>
+        </member>
+        <member name="T:SUCC.EnumStyle">
+            <summary>
+            Different options for how to save enum values
+            </summary>
+        </member>
+        <member name="F:SUCC.EnumStyle.name">
+            <summary> save the enum as its name if it has one, otherwise save its number </summary>
+        </member>
+        <member name="F:SUCC.EnumStyle.number">
+            <summary> always save the enum as its number </summary>
+        </member>
+        <member name="M:SUCC.InternalParsingLogic.DataConverter.SUCCFromDataStructure(System.Collections.Generic.List{SUCC.InternalParsingLogic.Line})">
+            <summary>
+            Turns a data structure into raw SUCC
+            </summary>
+        </member>
+        <member name="M:SUCC.InternalParsingLogic.DataConverter.DataStructureFromSUCC(System.String,SUCC.Abstractions.ReadableDataFile)">
+            <summary>
+            Parses a string of SUCC into a data structure
+            </summary>
+        </member>
+        <member name="M:SUCC.InternalParsingLogic.DataConverter.DataStructureFromSUCC(System.String[],SUCC.Abstractions.ReadableDataFile)">
+            <summary>
+            Parses lines of SUCC into a data structure
+            </summary>
+        </member>
+        <member name="T:SUCC.InternalParsingLogic.NodeManager">
+            <summary>
+            Gets and sets the data encoded by Nodes.
+            </summary>
+        </member>
+        <member name="T:SUCC.InternalParsingLogic.KeyNode">
+            <summary>
+            Represents a line of text in a SUCC file that contains data addressed by key.
+            </summary>
+        </member>
+        <member name="T:SUCC.InternalParsingLogic.Line">
+            <summary>
+            Represents a single line of text in a SUCC file.
+            </summary>
+        </member>
+        <member name="T:SUCC.InternalParsingLogic.ListNode">
+            <summary>
+            Represents a line of text in a SUCC file that contains data in a list.
+            </summary>
+        </member>
+        <member name="T:SUCC.InternalParsingLogic.MultiLineStringNode">
+            <summary>
+            Represents a line of text in a SUCC file that contains part of a multi-line string.
+            </summary>
+        </member>
+        <member name="T:SUCC.InternalParsingLogic.Node">
+            <summary>
+            Represents a line of text in a SUCC file that contains data.
+            </summary>
+        </member>
+        <member name="M:SUCC.InternalParsingLogic.Node.#ctor(System.String,SUCC.Abstractions.ReadableWritableDataFile)">
+            <summary> This constructor used when loading lines from file </summary>
+        </member>
+        <member name="M:SUCC.InternalParsingLogic.Node.#ctor(System.Int32,SUCC.Abstractions.ReadableWritableDataFile)">
+            <summary> This constructor used when creating new lines to add to the file </summary>
+        </member>
+        <member name="M:SUCC.InternalParsingLogic.ParsingLogicExtensions.GetIndentationLevel(System.String)">
+            <summary> the number of spaces in the string that precede the first non-space character </summary>
+        </member>
+        <member name="T:SUCC.DontSaveAttribute">
+            <summary>
+            Public fields and properties with this attribute will NOT be saved and loaded by SUCC.
+            </summary>
+        </member>
+        <member name="T:SUCC.DoSaveAttribute">
+            <summary>
+            Private fields and properties with this attribute WILL be saved and loaded by SUCC.
+            </summary>
+        </member>
+        <member name="T:SUCC.BaseTypes">
+            <summary>
+            Manages SUCC's database of Base Types. https://github.com/JimmyCushnie/SUCC/wiki/Base-Types
+            </summary>
+        </member>
+        <member name="M:SUCC.BaseTypes.ParseBaseType``1(System.String)">
+            <summary> Turn some text into data, if that data is of a base type. </summary>
+        </member>
+        <member name="M:SUCC.BaseTypes.ParseBaseType(System.String,System.Type)">
+            <summary> Non-generic version of ParseBaseType </summary>
+        </member>
+        <member name="M:SUCC.BaseTypes.IsBaseType(System.Type)">
+            <summary> Returns true if the type is a base type. </summary>
+        </member>
+        <member name="T:SUCC.BaseTypes.SerializeMethod`1">
+            <summary> Turns an object into text </summary>
+        </member>
+        <member name="T:SUCC.BaseTypes.ParseMethod`1">
+            <summary> Turns text into an object </summary>
+        </member>
+        <member name="M:SUCC.BaseTypes.AddBaseType``1(SUCC.BaseTypes.SerializeMethod{``0},SUCC.BaseTypes.ParseMethod{``0})">
+            <summary> Add a base type to SUCC serialization. It is recommended that you call this method in a static constructor. </summary>
+        </member>
+        <member name="T:SUCC.Utilities">
+            <summary>
+            Provides various helpful functions for working with SUCC files.
+            </summary>
+        </member>
+        <member name="P:SUCC.Utilities.DefaultPath">
+            <summary>
+            The path that DataFile locations will be relative to if you assign them a non-absolute path. By default this is System.AppContext.BaseDirectory, but you can change it if you like.
+            </summary>
+        </member>
+        <member name="F:SUCC.Utilities.FileExtension">
+            <summary> All SUCC files have this file extension. </summary>
+        </member>
+        <member name="M:SUCC.Utilities.AbsolutePath(System.String)">
+            <summary> detects whether a file path is relative or absolute, and returns the absolute path </summary>
+        </member>
+        <member name="M:SUCC.Utilities.SuccFileExists(System.String)">
+            <summary> Does a SUCC file exist at the path? </summary>
+        </member>
+        <member name="P:SUCC.Utilities.LineEndingStyle">
+            <summary> Controls how SUCC saves line endings. </summary>
+        </member>
+        <member name="T:SUCC.LineEndingStyle">
+            <summary>
+            Different ways of saving line endings.
+            </summary>
+        </member>
+        <member name="F:SUCC.LineEndingStyle.PlatformDefault">
+            <summary> Line endings are Windows style (CR LF) if on Windows and Unix style (LF) everywhere else. </summary>
+        </member>
+        <member name="F:SUCC.LineEndingStyle.Unix">
+            <summary> Line endings are Unix style (LF) </summary>
+        </member>
+        <member name="F:SUCC.LineEndingStyle.Windows">
+            <summary> Line endings are Windows style (CR LF) </summary>
+        </member>
+    </members>
+</doc>
