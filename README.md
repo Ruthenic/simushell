@@ -15,3 +15,6 @@ SSTUI by Ruthenic: https://github.com/Ruthenic/SSTUI
 
 # Trello
 https://trello.com/b/gBrpqk9M/simushell
+
+# Additional Notes
+1. The config file (Config.succ) may remain in a git commit. If it is, I reccomend deleting it before running the program from `/SimuShell/bin/debug/netcoreapp3.1/`.

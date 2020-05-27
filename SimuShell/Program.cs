@@ -118,15 +118,17 @@ namespace SimuShell
                 Console.WriteLine(to_print);
             }
             if (currentcommand == "settings"){conf_prg();}
-            
-
-            if (!File.Exists(path))
+            if (currentcommand == "help"){
+                Console.WriteLine("Welcome to the SimuShell help prompt!");
+            }
             Interpret();
         }
         static void Main(){
-            Console.WriteLine("Welcome to SimuShell. Type 'man' for manual.");
             //SUCC init pt. 2 electric boogaloo
             string pH = Config.Get("LOGGING", "on");
+            pH = Config.Get("START-P", "on");
+            string if_START = Config.Get<string>("START-P");
+            if(if_START == "on") {Console.WriteLine("Welcome to SimuShell. Type 'man' for manual.");}
             // KEEP AT END, AFTER ANY SUCC INITIALIZATION
             Interpret();
 
@@ -139,8 +141,8 @@ namespace SimuShell
         public static void conf_prg()
         {
             string[] options = new string[3]; //index must be the amount of settings in array
-            options[0] = "LOGGING - LOG ALL COMMANDS WRITTEN";
-            options[1] = "";
+            options[0] = "1. LOGGING - LOG ALL COMMANDS WRITTEN";
+            options[1] = "2. START-P - SHOW PROMPT AT START OF APP";
             options[2] = "";
             for (int i = 0; i == 0;){
             Console.Clear();
@@ -153,10 +155,12 @@ namespace SimuShell
                 if (vtcot == "on" || vtcot == "On")
                 {
                     if (otc == "1"){Config.Set("LOGGING", "on");}
+                    if (otc == "2"){Config.Set("START-P", "on");}
                 }
                 if (vtcot == "off" || vtcot == "Off")
                 {
                     if (otc == "1"){Config.Set("LOGGING", "off");}
+                    if (otc == "2"){Config.Set("START-P", "off");}
                 }
             else{Console.Clear(); Interpret();}
             }
