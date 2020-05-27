@@ -16,6 +16,7 @@ namespace SimuShell
             string currentcommand;
             //ask for command
             Console.Write(currentdir);
+            Console.Write(" - admin@SimuShell");
             Console.Write(">");
             currentcommand = (Console.ReadLine());
             CommandExec(currentcommand);
