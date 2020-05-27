@@ -10,7 +10,7 @@ No.
 Due to the difference in directory structures, it would be tough to focus on supporting to operating systems at the same time, so we only support Linux for the time being.
 
 # Included Libraries
-SUCC by JimmyCushnie: https://github.com/JimmyCushnie/SUCC
+SUCC by JimmyCushnie: https://github.com/JimmyCushnie/SUCC	
 SSTUI by Ruthenic: https://github.com/Ruthenic/SSTUI
 
 # Trello
