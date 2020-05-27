@@ -119,7 +119,7 @@ namespace SimuShell
             }
             if (currentcommand == "settings"){conf_prg();}
             if (currentcommand == "help"){
-                Console.WriteLine("Welcome to the SimuShell help prompt!");
+                Console.WriteLine("Welcome to the SimuShell help prompt! Go away, this is under construction. GET OUT!");
             }
             Interpret();
         }
