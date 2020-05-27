@@ -4,8 +4,9 @@ using SUCC;
 
 namespace SimuShell
 {
-    class Program
+    static class Program
     {
+        static DataFile Config = new DataFile("Config");
         public static string currentdir = "/";
         
         
@@ -130,6 +131,10 @@ namespace SimuShell
         static void Main(){
             Console.WriteLine("Welcome to SimuShell. Type 'man' for manual.");
             Interpret();
+            Config.Set("example value", 1234);
+            int exampleValue = Config.Get<int>("example value");
+            Console.WriteLine(exampleValue);
+            
         }
         public static void TestExternProgram(){
             Console.WriteLine("Test1 Works!");

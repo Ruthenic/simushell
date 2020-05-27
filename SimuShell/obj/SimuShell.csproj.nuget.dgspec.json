@@ -35,12 +35,6 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "dependencies": {
-            "SUCC.dll": {
-              "target": "Package",
-              "version": "[*, )"
-            }
-          },
           "imports": [
             "net461",
             "net462",

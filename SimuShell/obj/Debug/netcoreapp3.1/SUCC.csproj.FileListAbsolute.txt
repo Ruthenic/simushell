@@ -1,0 +1,9 @@
+/home/ruthenic/dev/SimuShell/SimuShell/bin/Debug/netcoreapp3.1/SUCC.deps.json
+/home/ruthenic/dev/SimuShell/SimuShell/bin/Debug/netcoreapp3.1/SUCC.dll
+/home/ruthenic/dev/SimuShell/SimuShell/bin/Debug/netcoreapp3.1/SUCC.pdb
+/home/ruthenic/dev/SimuShell/SimuShell/obj/Debug/netcoreapp3.1/SUCC.csproj.CoreCompileInputs.cache
+/home/ruthenic/dev/SimuShell/SimuShell/obj/Debug/netcoreapp3.1/SUCC.AssemblyInfoInputs.cache
+/home/ruthenic/dev/SimuShell/SimuShell/obj/Debug/netcoreapp3.1/SUCC.AssemblyInfo.cs
+/home/ruthenic/dev/SimuShell/SimuShell/obj/Debug/netcoreapp3.1/SUCC.dll
+/home/ruthenic/dev/SimuShell/SimuShell/obj/Debug/netcoreapp3.1/SUCC.pdb
+/home/ruthenic/dev/SimuShell/SimuShell/obj/Debug/netcoreapp3.1/SUCC.csprojAssemblyReference.cache
