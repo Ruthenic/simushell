@@ -11,7 +11,7 @@ Due to the difference in directory structures, it would be tough to focus on sup
 
 # Included Libraries
 SUCC by JimmyCushnie: https://github.com/JimmyCushnie/SUCC
-
+SSTUI by Ruthenic: https://github.com/Ruthenic/SSTUI
 
 # Trello
 https://trello.com/b/gBrpqk9M/simushell

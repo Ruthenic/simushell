@@ -142,6 +142,7 @@ namespace SimuShell
             options[1] = "";
             options[2] = "";
             for (int i = 0; i == 0;){
+            Console.Clear();
             PrintValues(options);
             Console.Write("Select the number of the option you would like to change, or say exit to exit: ");
             string otc = Console.ReadLine();
@@ -156,7 +157,7 @@ namespace SimuShell
                 {
                     if (otc == "1"){Config.Set("LOGGING", "off");}
                 }
-            else{Interpret();}
+            else{Console.Clear(); Interpret();}
             }
         }
     }
