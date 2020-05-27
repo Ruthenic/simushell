@@ -5,10 +5,10 @@ using SUCC;
 namespace SimuShell
 {
     static class Program
-    {
+    {   
         static DataFile Config = new DataFile("Config"); //init SUCC
         public static string currentdir = "/";
-        
+        public static string path = "~/.tmp/simushell-cmd.log";
         
         
         static void Interpret()
@@ -116,12 +116,16 @@ namespace SimuShell
                 string to_print = currentcommand.Replace("echo ", "");
                 Console.WriteLine(to_print);
             }
+            if (currentcommand == "settings"){conf_prg();}
             
+
+            if (!File.Exists(path))
             Interpret();
         }
         static void Main(){
             Console.WriteLine("Welcome to SimuShell. Type 'man' for manual.");
-            
+            //SUCC init pt. 2 electric boogaloo
+            string pH = Config.Get("LOGGING", "on");
             // KEEP AT END, AFTER ANY SUCC INITIALIZATION
             Interpret();
 
@@ -133,7 +137,27 @@ namespace SimuShell
 
         public static void conf_prg()
         {
-            
+            string[] options = new string[3]; //index must be the amount of settings in array
+            options[0] = "LOGGING - LOG ALL COMMANDS WRITTEN";
+            options[1] = "";
+            options[2] = "";
+            for (int i = 0; i == 0;){
+            PrintValues(options);
+            Console.Write("Select the number of the option you would like to change, or say exit to exit: ");
+            string otc = Console.ReadLine();
+            if (otc != "exit")    
+                Console.Write("on or off: ");
+                string vtcot = Console.ReadLine();
+                if (vtcot == "on" || vtcot == "On")
+                {
+                    if (otc == "1"){Config.Set("LOGGING", "on");}
+                }
+                if (vtcot == "off" || vtcot == "Off")
+                {
+                    if (otc == "1"){Config.Set("LOGGING", "off");}
+                }
+            else{Interpret();}
+            }
         }
     }
 }
