@@ -128,6 +128,7 @@ namespace SimuShell
             //SUCC init pt. 2 electric boogaloo
             string pH = Config.Get("LOGGING", "on");
             pH = Config.Get("START-P", "on");
+            pH = Config.Get("START-P", "on");
             string if_START = Config.Get<string>("START-P");
             if(if_START == "on") {Console.WriteLine("Welcome to SimuShell. Type 'man' for manual.");}
             // KEEP AT END, AFTER ANY SUCC INITIALIZATION
