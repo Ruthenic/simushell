@@ -6,6 +6,7 @@ namespace SimuShell
 {
     static class Program
     {   
+        //test push mats
         static DataFile Config = new DataFile("Config"); //init SUCC
         public static string currentdir = "/";
         public static string path = "~/.tmp/simushell-cmd.log";
@@ -117,7 +118,7 @@ namespace SimuShell
                 string to_print = currentcommand.Replace("echo ", "");
                 Console.WriteLine(to_print);
             }
-            if (currentcommand == "settings"){conf_prg();}
+            if (currentcommand == "settings"){SUCC_SET();}
             if (currentcommand == "help"){
                 Console.WriteLine("Welcome to the SimuShell help prompt! Go away, this is under construction. GET OUT!");
             }
@@ -131,14 +132,12 @@ namespace SimuShell
             if(if_START == "on") {Console.WriteLine("Welcome to SimuShell. Type 'man' for manual.");}
             // KEEP AT END, AFTER ANY SUCC INITIALIZATION
             Interpret();
-
-            
         }
         public static void TestExternProgram(){
             Console.WriteLine("Test1 Works!");
         }
 
-        public static void conf_prg()
+        public static void SUCC_SET()
         {
             string[] options = new string[3]; //index must be the amount of settings in array
             options[0] = "1. LOGGING - LOG ALL COMMANDS WRITTEN";
