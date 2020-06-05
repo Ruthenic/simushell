@@ -6,7 +6,7 @@ namespace SimuShell
 {
     static class Program
     {   
-        //test push mats
+        //test push mats2
         static DataFile Config = new DataFile("Config"); //init SUCC
         public static string currentdir = "/";
         public static string path = "~/.tmp/simushell-cmd.log";
