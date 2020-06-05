@@ -17,4 +17,4 @@ SSTUI by Ruthenic: https://github.com/Ruthenic/SSTUI
 https://trello.com/b/gBrpqk9M/simushell
 
 # Additional Notes
-1. The config file (Config.succ) may remain in a git commit. If it is, I reccomend deleting it before running the program from `/SimuShell/bin/debug/netcoreapp3.1/`.
+1. ~~The config file (Config.succ) may remain in a git commit. If it is, I reccomend deleting it before running the program from `/SimuShell/bin/debug/netcoreapp3.1/`.~~ Leaving this here for archival and if .gitignore screws up, the Config.succ file should no longer be there after commits
