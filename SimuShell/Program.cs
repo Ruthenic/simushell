@@ -32,8 +32,6 @@ namespace SimuShell
         }
         public static void CommandExec(String currentcommand)
         {
-            //public declaration doesn't appear to work in if statements or at all without being static static(or Ruthenic am dumb and that is intended Ruthenic dunno)
-            bool HasFallbackOccured = false;
             string prevpath = currentdir;
             if (currentcommand == "clear"){Console.Clear();}
             if (currentcommand == "dir")
@@ -70,48 +68,29 @@ namespace SimuShell
             }
                 if (currentcommand.StartsWith("cd "))
             {
-                //yes, this code sucks. no, Ruthenic do not understand it still. 
-                //it will be here until Ruthenic can make it not insane on the level of valve programmers
                 string newpath = currentcommand.Replace("cd ", "");
-                if (newpath == (".."))
-                {
-                    int index = currentdir.LastIndexOf("/");
-                    if (index > 0)
-                        newpath = currentdir.Substring(0, index);
-                    if (newpath == "")
-                        newpath = "/";
-                }
-                else
-                {
-                    string[] folders = Directory.GetDirectories(currentdir);
-                    if (currentdir == "/" && Array.Exists(folders, element => element.Contains(newpath)))
+                string[] newpathar = newpath.Split("/");
+                foreach (string path in newpathar){
+                    if (path == "..")
                     {
-                        newpath = currentdir + newpath;
+                        currentdir = currentdir.Remove(currentdir.LastIndexOf("/"));
                     }
-                    else
-                    {
-                        if (Array.Exists(folders, element => element.Contains(newpath)))
+                    else if (path == "."){
+                    }
+                    else{
+                        string[] folders = Directory.GetDirectories(currentdir);
+                        if (Array.Exists(folders, element => element.Contains(path)))
                         {
-                        newpath = currentdir + "/" + newpath;
+                        currentdir = currentdir + "/" + path;
                         }
                         else
                         {
                             Console.WriteLine("Not a valid directory");
                             currentdir = prevpath;
-                            HasFallbackOccured = true;
                         }
                     }
-
+                if (currentdir == "") {currentdir = "/";}
                 }
-                if (!currentdir.Contains("/")){
-                
-                    currentdir = "/";
-                }   
-                if (currentdir == "..")
-                {
-                    currentdir = "/";
-                }
-                if (HasFallbackOccured == false){currentdir = newpath;}
             }
             if (currentcommand == "man")
             {
@@ -125,11 +104,11 @@ namespace SimuShell
                 PrintValues(man);
 
             }
-            if (currentcommand == "exit ")
+            if (currentcommand == "exit")
             {
                 System.Environment.Exit(69); //the nice number
             }
-            if (currentcommand.StartsWith("echo fi"))
+            if (currentcommand.StartsWith("echo "))
             {
                 string to_print = currentcommand.Replace("echo ", "");
                 Console.WriteLine(to_print);
