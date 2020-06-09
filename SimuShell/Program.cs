@@ -28,11 +28,11 @@ namespace SimuShell
             {
                 Console.WriteLine(i);
             }
-            //code from https://docs.microsoft.com/en-us/dotnet/api/system.array?view=netcore-3.1 and edited to handle strings and some other things by me
+            //code from https://docs.microsoft.com/en-us/dotnet/api/system.array?view=netcore-3.1 and edited to handle strings and some other things by Ruthenic
         }
         public static void CommandExec(String currentcommand)
         {
-            //public declaration doesn't appear to work in if statements or at all without being static static(or i am dumb and that is intended i dunno)
+            //public declaration doesn't appear to work in if statements or at all without being static static(or Ruthenic am dumb and that is intended Ruthenic dunno)
             bool HasFallbackOccured = false;
             string prevpath = currentdir;
             if (currentcommand == "clear"){Console.Clear();}
@@ -68,12 +68,12 @@ namespace SimuShell
                 }
             Console.WriteLine("");
             }
-                if (currentcommand.Contains("cd"))
+                if (currentcommand.StartsWith("cd "))
             {
-                //yes, this code sucks. no, i do not understand it still. 
-                //it will be here until i can make it not insane on the level of valve programmers
+                //yes, this code sucks. no, Ruthenic do not understand it still. 
+                //it will be here until Ruthenic can make it not insane on the level of valve programmers
                 string newpath = currentcommand.Replace("cd ", "");
-                if (newpath.Contains(".."))
+                if (newpath == (".."))
                 {
                     int index = currentdir.LastIndexOf("/");
                     if (index > 0)
@@ -125,11 +125,11 @@ namespace SimuShell
                 PrintValues(man);
 
             }
-            if (currentcommand == "exit")
+            if (currentcommand == "exit ")
             {
-                System.Environment.Exit(69); //the reddit nice number
+                System.Environment.Exit(69); //the nice number
             }
-            if (currentcommand.Contains("echo"))
+            if (currentcommand.StartsWith("echo fi"))
             {
                 string to_print = currentcommand.Replace("echo ", "");
                 Console.WriteLine(to_print);
@@ -149,9 +149,6 @@ namespace SimuShell
             if(if_START == "on") {Console.WriteLine("Welcome to SimuShell. Type 'man' for manual.");}
             // KEEP AT END, AFTER ANY SUCC INITIALIZATION
             Interpret();
-        }
-        public static void TestExternProgram(){
-            Console.WriteLine("Test1 Works!");
         }
 
         public static void SUCC_SET()
