@@ -6,7 +6,6 @@ namespace SimuShell
 {
     static class Program
     {   
-        //test push mats2
         static DataFile Config = new DataFile("Config"); //init SUCC
         public static string currentdir = "/";
         public static string path = "~/.tmp/simushell-cmd.log";
@@ -36,26 +35,43 @@ namespace SimuShell
             //public declaration doesn't appear to work in if statements or at all without being static static(or i am dumb and that is intended i dunno)
             bool HasFallbackOccured = false;
             string prevpath = currentdir;
+            if (currentcommand == "clear"){Console.Clear();}
             if (currentcommand == "dir")
             {
                 Console.WriteLine(currentdir);
             }
             if (currentcommand == "list" || currentcommand == "ls")
             {
+                int amountoflisted = 0;
                 string[] filesindir = Directory.GetFiles(currentdir);
                 string[] foldsindir = Directory.GetDirectories(currentdir);
-                Console.WriteLine(currentdir, "contains:");
                 foreach (string name in foldsindir)
                 {
-                    Console.WriteLine(name, " ");
+                    string newname = name + "/";
+                    Console.Write(newname.PadRight(3 + newname.Length));
+                    amountoflisted = amountoflisted + 1;
+                    if (amountoflisted == 5){
+                        Console.WriteLine("");
+                        amountoflisted = 0;
+                    }
                 }
                 foreach (string name in filesindir)
                 {
-                    Console.WriteLine(name, " ");
+                    string newname = name;
+                    Console.Write(newname.PadRight(3 + newname.Length));
+                    amountoflisted = amountoflisted + 1;
+                    if (amountoflisted == 5){
+                        Console.WriteLine("");
+                        amountoflisted = 0;
+                    }
+                
                 }
+            Console.WriteLine("");
             }
                 if (currentcommand.Contains("cd"))
             {
+                //yes, this code sucks. no, i do not understand it still. 
+                //it will be here until i can make it not insane on the level of valve programmers
                 string newpath = currentcommand.Replace("cd ", "");
                 if (newpath.Contains(".."))
                 {
@@ -80,7 +96,7 @@ namespace SimuShell
                         }
                         else
                         {
-                            Console.WriteLine("Not a valid directory; Fallback to previous");
+                            Console.WriteLine("Not a valid directory");
                             currentdir = prevpath;
                             HasFallbackOccured = true;
                         }
@@ -111,7 +127,7 @@ namespace SimuShell
             }
             if (currentcommand == "exit")
             {
-                System.Environment.Exit(69);
+                System.Environment.Exit(69); //the reddit nice number
             }
             if (currentcommand.Contains("echo"))
             {
