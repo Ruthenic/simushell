@@ -34,10 +34,7 @@ namespace SimuShell
         {
             string prevpath = currentdir;
             if (currentcommand == "clear"){Console.Clear();}
-            if (currentcommand == "dir")
-            {
-                Console.WriteLine(currentdir);
-            }
+            if (currentcommand == "dir"){Console.WriteLine(currentdir);}
             if (currentcommand == "list" || currentcommand == "ls")
             {
                 int amountoflisted = 0;
@@ -48,20 +45,14 @@ namespace SimuShell
                     string newname = name + "/";
                     Console.Write(newname.PadRight(3 + newname.Length));
                     amountoflisted = amountoflisted + 1;
-                    if (amountoflisted == 5){
-                        Console.WriteLine("");
-                        amountoflisted = 0;
-                    }
+                    if (amountoflisted == 5){Console.WriteLine(""); amountoflisted = 0;}
                 }
                 foreach (string name in filesindir)
                 {
                     string newname = name;
                     Console.Write(newname.PadRight(3 + newname.Length));
                     amountoflisted = amountoflisted + 1;
-                    if (amountoflisted == 5){
-                        Console.WriteLine("");
-                        amountoflisted = 0;
-                    }
+                    if (amountoflisted == 5){Console.WriteLine(""); amountoflisted = 0;}
                 
                 }
             Console.WriteLine("");
@@ -97,25 +88,17 @@ namespace SimuShell
                 PrintValues(man);
 
             }
-            if (currentcommand == "exit")
-            {
-                System.Environment.Exit(69); //the nice number
-            }
+            if (currentcommand == "exit"){System.Environment.Exit(69);}//the nice number
             if (currentcommand.StartsWith("echo "))
             {
-                string to_print = currentcommand.Replace("echo ", "");
-                Console.WriteLine(to_print);
+                Console.WriteLine(currentcommand.Replace("echo ", ""));
             }
             if (currentcommand == "settings"){SUCC_SET();}
-            if (currentcommand == "help"){
-                Console.WriteLine("Welcome to the SimuShell help prompt! Go away, this is under construction. GET OUT!");
-            }
             Interpret();
         }
         static void Main(){
             //SUCC init pt. 2 electric boogaloo
             string pH = Config.Get("LOGGING", "on");
-            pH = Config.Get("START-P", "on");
             pH = Config.Get("START-P", "on");
             string if_START = Config.Get<string>("START-P");
             if(if_START == "on") {Console.WriteLine("Welcome to SimuShell. Type 'man' for manual.");}
@@ -125,7 +108,7 @@ namespace SimuShell
 
         public static void SUCC_SET()
         {
-            string[] options = new string[3]; //index must be the amount of settings in array
+            string[] options = new string[3]; //index must be the amount of settings in array + 1
             options[0] = "1. LOGGING - LOG ALL COMMANDS WRITTEN";
             options[1] = "2. START-P - SHOW PROMPT AT START OF APP";
             options[2] = "";
