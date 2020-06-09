@@ -66,23 +66,16 @@ namespace SimuShell
                 }
             Console.WriteLine("");
             }
-                if (currentcommand.StartsWith("cd "))
+            if (currentcommand.StartsWith("cd "))
             {
                 string newpath = currentcommand.Replace("cd ", "");
                 string[] newpathar = newpath.Split("/");
                 foreach (string path in newpathar){
-                    if (path == "..")
-                    {
-                        currentdir = currentdir.Remove(currentdir.LastIndexOf("/"));
-                    }
-                    else if (path == "."){
-                    }
+                    if (path == ".."){currentdir = currentdir.Remove(currentdir.LastIndexOf("/"));}
+                    else if (path == "."){}
                     else{
                         string[] folders = Directory.GetDirectories(currentdir);
-                        if (Array.Exists(folders, element => element.Contains(path)))
-                        {
-                        currentdir = currentdir + "/" + path;
-                        }
+                        if (Array.Exists(folders, element => element.Contains(path))){currentdir = currentdir + "/" + path;}
                         else
                         {
                             Console.WriteLine("Not a valid directory");
