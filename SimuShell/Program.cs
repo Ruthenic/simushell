@@ -34,7 +34,7 @@ namespace SimuShell
         {
             string prevpath = currentdir;
             if (currentcommand == "clear"){Console.Clear();}
-            if (currentcommand == "dir"){Console.WriteLine(currentdir);}
+            if (currentcommand == "pwd"){Console.WriteLine(currentdir);}
             if (currentcommand == "list" || currentcommand == "ls")
             {
                 int amountoflisted = 0;
@@ -66,7 +66,10 @@ namespace SimuShell
                     else if (path == "."){}
                     else{
                         string[] folders = Directory.GetDirectories(currentdir);
-                        if (Array.Exists(folders, element => element.Contains(path))){currentdir = currentdir + "/" + path;}
+                        if (Array.Exists(folders, element => element.Contains(path))){
+                            if (currentdir != "/") {currentdir = currentdir + "/" + path;}
+                            else {currentdir += path;}
+                            }
                         else
                         {
                             Console.WriteLine("Not a valid directory");
@@ -78,14 +81,14 @@ namespace SimuShell
             }
             if (currentcommand == "man")
             {
-                string[] man = new string[6]; //index must be the amount of commands in the array/man page
+                /*string[] man = new string[6]; //index must be the amount of commands in the array/man page
                 man[0] = "cd; change directory (append '..' to go back a directory)";
                 man[1] = "ls or list; list all files and folders in directory";
-                man[2] = "dir; list current directory";
+                man[2] = "pwd; list current directory";
                 man[3] = "man; prints this";
                 man[4] = "exit; closes SimuShell";
-                man[5] = "echo; prints whatever is behind it";
-                PrintValues(man);
+                man[5] = "echo; prints whatever is behind it";*/
+                //PrintValues();
 
             }
             if (currentcommand == "exit"){System.Environment.Exit(69);}//the nice number
@@ -117,7 +120,7 @@ namespace SimuShell
             PrintValues(options);
             Console.Write("Select the number of the option you would like to change, or say exit to exit: ");
             string otc = Console.ReadLine();
-            if (otc != "exit")    
+            if (otc != "exit") {   
                 Console.Write("on or off: ");
                 string vtcot = Console.ReadLine();
                 if (vtcot == "on" || vtcot == "On")
@@ -135,3 +138,4 @@ namespace SimuShell
         }
     }
 }
+} //this is fucky but it works
