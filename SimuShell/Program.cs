@@ -8,6 +8,7 @@ namespace SimuShell
     {   
         static DataFile Config = new DataFile("Config"); //init SUCC
         public static string currentdir = "/";
+        public static string publicdir = currentdir;
         public static string path = "~/.tmp/simushell-cmd.log";
         
         
@@ -15,7 +16,7 @@ namespace SimuShell
         {
             string currentcommand;
             //ask for command
-            Console.Write(currentdir);
+            Console.Write(publicdir);
             Console.Write(" - admin@SimuShell");
             Console.Write(">");
             currentcommand = (Console.ReadLine());
@@ -62,6 +63,7 @@ namespace SimuShell
                 string newpath = currentcommand.Replace("cd ", "");
                 string[] newpathar = newpath.Split("/");
                 foreach (string path in newpathar){
+                    if (path == ""){break;}
                     if (path == ".."){currentdir = currentdir.Remove(currentdir.LastIndexOf("/"));}
                     else if (path == "."){}
                     else{
@@ -76,8 +78,18 @@ namespace SimuShell
                             currentdir = prevpath;
                         }
                     }
+                if (currentdir.EndsWith("/")){currentdir = currentdir.Remove(currentdir.LastIndexOf("/"));}
                 if (currentdir == "") {currentdir = "/";}
+                publicdir = currentdir;
+                if (publicdir.StartsWith("/home/" + System.Environment.UserName.ToLowerInvariant())){publicdir = publicdir.Replace("/home/" + System.Environment.UserName.ToLowerInvariant(), "~");}
                 }
+            }
+            if (currentcommand.StartsWith("cat ")){
+                string readpath = currentcommand.Replace("cat ", "");
+                if (readpath.Contains("/")){}
+                else {readpath = currentdir + "/" + readpath;}
+                string[] catline = System.IO.File.ReadAllLines(readpath);
+                PrintValues(catline);
             }
             if (currentcommand == "man")
             {
@@ -138,4 +150,4 @@ namespace SimuShell
         }
     }
 }
-} //this is fucky but it works
+} //this is screwy but it works 
