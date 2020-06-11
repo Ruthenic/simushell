@@ -1,5 +1,6 @@
-﻿using SUCC.InternalParsingLogic;
+﻿using SUCC.ParsingLogic;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace SUCC.Abstractions
@@ -14,13 +15,10 @@ namespace SUCC.Abstractions
 
         /// <summary> If true, the DataFile will automatically save changes to disk with each Get or Set. If false, you must call SaveAllData() manually. </summary>
         /// <remarks> Be careful with this. You do not want to accidentally be writing to a user's disk at 1000MB/s for 3 hours. </remarks>
-        public bool AutoSave { get; set; }
+        public bool AutoSave { get; set; } = true;
 
-        /// <inheritdoc/>
-        public ReadableWritableDataFile(bool autoSave, FileStyle style)
+        public ReadableWritableDataFile(string defaultFileText = null) : base(defaultFileText)
         {
-            AutoSave = autoSave;
-            Style = style;
         }
 
         /// <summary> Save the file text to wherever you're storing it </summary>
@@ -29,30 +27,29 @@ namespace SUCC.Abstractions
         /// <summary> Serializes the data in this object to the file on disk. </summary>
         public void SaveAllData()
         {
-            string SUCC = GetRawText();
-            string ExistingSUCC = GetSavedText();
+            string newSUCC = GetRawText();
+            string existingSUCC = GetSavedText();
 
-            if (SUCC != ExistingSUCC)
-                SetSavedText(SUCC);
+            if (newSUCC != existingSUCC)
+                SetSavedText(newSUCC);
         }
-
 
         /// <summary> Get some data from the file, saving a new value if the data does not exist </summary>
         /// <param name="key"> what the data is labeled as within the file </param>
         /// <param name="defaultValue"> if the key does not exist in the file, this value is saved there and returned </param>
-        public override T Get<T>(string key, T defaultValue = default)
+        public override T Get<T>(string key, T defaultValue)
             => base.Get(key, defaultValue);
 
         /// <summary> Non-generic version of Get. You probably want to use Get. </summary>
         /// <param name="type"> the type to get the data as </param>
         /// <param name="key"> what the data is labeled as within the file </param>
-        /// <param name="DefaultValue"> if the key does not exist in the file, this value is saved there and returned </param>
-        public override object GetNonGeneric(Type type, string key, object DefaultValue)
+        /// <param name="defaultValue"> if the key does not exist in the file, this value is saved there and returned </param>
+        public override object GetNonGeneric(Type type, string key, object defaultValue)
         {
             if (!KeyExists(key))
             {
-                SetNonGeneric(type, key, DefaultValue);
-                return DefaultValue;
+                SetNonGeneric(type, key, defaultValue);
+                return defaultValue;
             }
 
             var node = TopLevelNodes[key];
@@ -71,11 +68,8 @@ namespace SUCC.Abstractions
         /// <param name="value"> the value to save </param>
         public void SetNonGeneric(Type type, string key, object value)
         {
-            if (value == null)
-                throw new Exception("you can't serialize null");
-
-            if (value.GetType() != type)
-                throw new InvalidCastException($"{value} is not of type {type}!");
+            if (value != null && !type.IsAssignableFrom(value.GetType()))
+                throw new InvalidCastException($"Expected type {type}, but the object is of type {value.GetType()}");
 
             if (!KeyExists(key))
             {
@@ -116,11 +110,8 @@ namespace SUCC.Abstractions
         /// <summary> Non-generic version of SetAtPath. You probably want to use SetAtPath. </summary>
         public void SetAtPathNonGeneric(Type type, object value, params string[] path)
         {
-            if (value == null)
-                throw new Exception("you can't serialize null");
-
-            if (value.GetType() != type)
-                throw new InvalidCastException($"{value} is not of type {type}!");
+            if (value != null && !type.IsAssignableFrom(value.GetType()))
+                throw new InvalidCastException($"{nameof(type)} must be assignable from the type of {nameof(value)}");
 
             if (path.Length < 1)
                 throw new ArgumentException($"{nameof(path)} must have a length greater than 0");
@@ -172,11 +163,8 @@ namespace SUCC.Abstractions
 
             try
             {
-                foreach (var f in ComplexTypes.GetValidFields(type))
-                    SetNonGeneric(f.FieldType, f.Name, f.GetValue(savethis));
-
-                foreach (var p in ComplexTypes.GetValidProperties(type))
-                    SetNonGeneric(p.PropertyType, p.Name, p.GetValue(savethis));
+                foreach (var m in type.GetValidMembers())
+                    SetNonGeneric(m.MemberType, m.Name, m.GetValue(savethis));
             }
             finally
             {
@@ -223,6 +211,58 @@ namespace SUCC.Abstractions
 
             if (AutoSave)
                 SaveAllData();
+        }
+
+
+
+        /// <summary>
+        /// Reset the file to the default data provided when it was created.
+        /// </summary>
+        public void ResetToDefaultData()
+        {
+            SetSavedText(DefaultFileCache?.GetRawText() ?? string.Empty);
+            ReloadAllData();
+        }
+
+        /// <summary>
+        /// Reset a value within the file to the default data provided when it was created.
+        /// </summary>
+        // Todo: make a version of this with nested paths
+        public void ResetValueToDefault(string key)
+        {
+            if (!DefaultFileCache.KeyExists(key))
+            {
+                this.DeleteKey(key);
+                return;
+            }
+
+            var defaultNode = DefaultFileCache.TopLevelNodes[key];
+            string defaultValueSucc = DataConverter.GetLineTextIncludingChildLines(defaultNode);
+
+            string fileText;
+
+            if (this.KeyExists(key))
+            {
+                var node = TopLevelNodes[key];
+                node.ClearChildren();
+
+                string previousLineTarget = node.RawText;
+
+                var lines = this.GetRawLines().ToList();
+                int index = lines.IndexOf(previousLineTarget);
+                lines[index] = defaultValueSucc;
+
+                fileText = String.Join(Utilities.NewLine, lines);
+            }
+            else
+            {
+                fileText = this.GetRawText();
+                fileText += Utilities.NewLine;
+                fileText += defaultValueSucc;
+            }
+
+            this.SetSavedText(fileText);
+            this.ReloadAllData();
         }
     }
 }

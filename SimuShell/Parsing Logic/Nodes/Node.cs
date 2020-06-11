@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SUCC.InternalParsingLogic
+namespace SUCC.ParsingLogic
 {
     internal enum NodeChildrenType { none, list, key, multiLineString }
 
@@ -128,7 +128,8 @@ namespace SUCC.InternalParsingLogic
             _ChildLines.Clear();
             _ChildNodes.Clear();
 
-            if (newChildrenType != null) ChildNodeType = (NodeChildrenType)newChildrenType;
+            if (newChildrenType != null) 
+                ChildNodeType = (NodeChildrenType)newChildrenType;
         }
 
         public void AddChild(Line newLine)
@@ -136,7 +137,9 @@ namespace SUCC.InternalParsingLogic
             _ChildLines.Add(newLine);
 
             Node newNode = newLine as Node;
-            if (newNode != null) _ChildNodes.Add(newNode);
+
+            if (newNode != null) 
+                _ChildNodes.Add(newNode);
         }
 
         public void RemoveChild(string key)

@@ -12,32 +12,26 @@ namespace SUCC
         /// <summary>
         /// Creates a new ReadOnlyDataFile object corresponding to a SUCC file in system storage.
         /// </summary>
-        /// <param name="path"> the path of the file. Can be either absolute or relative to the default path. </param>
-        /// <param name="defaultFileText"> optionally, if there isn't a file at the path, one can be created from the text supplied here. </param>
-        /// <param name="autoReload"> if true, the DataFile will automatically reload when the file changes on disk. </param>
-        public ReadOnlyDataFile(string path, string defaultFileText = null, bool autoReload = false)
+        /// <param name="path"> The path of the file. Can be either absolute or relative to the default path. </param>
+        /// <param name="defaultFileText"> If there isn't already a file at the path, one can be created from the text supplied here. </param>
+        public ReadOnlyDataFile(string path, string defaultFileText = null) : base(defaultFileText)
         {
-            path = Utilities.AbsolutePath(path);
-            path = Path.ChangeExtension(path, Utilities.FileExtension);
+            path = Utilities.AbsoluteSuccPath(path);
             this.FilePath = path;
 
             if (!Utilities.SuccFileExists(path))
             {
+                Directory.CreateDirectory(new FileInfo(path).Directory.FullName);
+
                 if (defaultFileText == null)
-                {
-                    Directory.CreateDirectory(new FileInfo(path).Directory.FullName);
                     File.Create(path).Close(); // create empty file on disk
-                }
                 else
-                {
                     File.WriteAllText(path, defaultFileText);
-                }
             }
 
             this.ReloadAllData();
 
             SetupWatcher(); // setup watcher AFTER file has been created
-            this.AutoReload = autoReload;
         }
 
         /// <inheritdoc/>
@@ -49,6 +43,8 @@ namespace SUCC
             return String.Empty;
         }
 
+        /// <inheritdoc/>
+        public override string Identifier => FilePath;
 
 
         #region IDataFileOnDisk implementation
@@ -77,7 +73,7 @@ namespace SUCC
                     IgnoreNextFileReload = false; // in case this was set to true while AutoReload was false
             }
         }
-        bool _AutoReload = true;
+        bool _AutoReload = false;
 
         private FileSystemWatcher Watcher;
         private void SetupWatcher()
@@ -87,6 +83,7 @@ namespace SUCC
 
             Watcher.NotifyFilter = NotifyFilters.LastWrite;
             Watcher.Changed += this.OnWatcherChanged;
+            Watcher.EnableRaisingEvents = this.AutoReload;
         }
 
         // Watcher.Changed takes several seconds to fire, so we use this.

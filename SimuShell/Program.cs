@@ -61,7 +61,7 @@ namespace SimuShell
             if (currentcommand.StartsWith("cd "))
             {
                 string newpath = currentcommand.Replace("cd ", "");
-                string[] newpathar = newpath.Split("/");
+                string[] newpathar = newpath.Split('/');
                 foreach (string path in newpathar){
                     if (path == ""){break;}
                     if (path == ".."){currentdir = currentdir.Remove(currentdir.LastIndexOf("/"));}
