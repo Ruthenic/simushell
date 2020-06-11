@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 using SUCC;
 
 namespace SimuShell
@@ -109,7 +110,7 @@ namespace SimuShell
                 man.Add("echo; prints whatever is behind it");
                 printStringList(man);
             }
-            if (currentcommand == "exit"){System.Environment.Exit(69);}//the nice number
+            if (currentcommand == "exit"){System.Environment.Exit(69);} //the nice number
             if (currentcommand.StartsWith("echo "))
             {
                 Console.WriteLine(currentcommand.Replace("echo ", ""));
@@ -118,10 +119,15 @@ namespace SimuShell
             if (currentcommand.StartsWith("append ")){
                 string writepath;
                 string twoargs = currentcommand.Replace("append ", "");
-                string[] arrayargs = twoargs.Split(' ');
-                if (arrayargs[1].Contains("/")){writepath = arrayargs[1];}
-                else {writepath = currentdir + "/" + arrayargs[1];}
-                File.AppendAllText(writepath, arrayargs[0] + Environment.NewLine);
+                List<string> arrayargs = twoargs.Split(' ').ToList();
+                string lastItem = arrayargs.Last();
+                arrayargs.Remove(arrayargs.Last());
+                if (lastItem.Contains("/")){writepath = lastItem;}
+                else {writepath = currentdir + "/" + lastItem;}
+                foreach (var item in arrayargs)
+                {
+                    File.AppendAllText(writepath, item + Environment.NewLine);
+                }
             }
             if (currentcommand.StartsWith("rm ")){
                 string rmpath;
@@ -129,6 +135,9 @@ namespace SimuShell
                 if (arrayargs[1].Contains("/")){rmpath = arrayargs[1];}
                 else {rmpath = currentdir + "/" + arrayargs[1];}
                 File.Delete(rmpath);
+            }
+            if (currentcommand.StartsWith("touch")){
+
             }
             Interpret();
         }
