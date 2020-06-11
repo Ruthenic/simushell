@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Collections.Generic;
 using SUCC;
 
 namespace SimuShell
@@ -23,13 +24,18 @@ namespace SimuShell
             CommandExec(currentcommand);
                 
         }
-        public static void PrintValues(String[] myArr)
+        public static void PrintArray(String[] myArr)
         {
             foreach (String i in myArr)
             {
                 Console.WriteLine(i);
             }
             //code from https://docs.microsoft.com/en-us/dotnet/api/system.array?view=netcore-3.1 and edited to handle strings and some other things by Ruthenic
+        }
+        public static void printStringList(List<string> myList){
+            foreach (string str in myList){
+                Console.WriteLine(str);
+            }
         }
         public static void CommandExec(String currentcommand)
         {
@@ -66,6 +72,7 @@ namespace SimuShell
                     if (path == ""){break;}
                     if (path == ".."){currentdir = currentdir.Remove(currentdir.LastIndexOf("/"));}
                     else if (path == "."){}
+                    else if (path == "~"){currentdir = "/home/" + System.Environment.UserName;}
                     else{
                         string[] folders = Directory.GetDirectories(currentdir);
                         if (Array.Exists(folders, element => element.Contains(path))){
@@ -89,19 +96,18 @@ namespace SimuShell
                 if (readpath.Contains("/")){}
                 else {readpath = currentdir + "/" + readpath;}
                 string[] catline = System.IO.File.ReadAllLines(readpath);
-                PrintValues(catline);
+                PrintArray(catline);
             }
             if (currentcommand == "man")
             {
-                /*string[] man = new string[6]; //index must be the amount of commands in the array/man page
-                man[0] = "cd; change directory (append '..' to go back a directory)";
-                man[1] = "ls or list; list all files and folders in directory";
-                man[2] = "pwd; list current directory";
-                man[3] = "man; prints this";
-                man[4] = "exit; closes SimuShell";
-                man[5] = "echo; prints whatever is behind it";*/
-                //PrintValues();
-
+                List<string> man = new List<string>();
+                man.Add("cd; change directory (append '..' to go back a directory)");
+                man.Add("ls or list; list all files and folders in directory");
+                man.Add("pwd; list current directory");
+                man.Add("man; prints this");
+                man.Add("exit; closes SimuShell");
+                man.Add("echo; prints whatever is behind it");
+                printStringList(man);
             }
             if (currentcommand == "exit"){System.Environment.Exit(69);}//the nice number
             if (currentcommand.StartsWith("echo "))
@@ -116,6 +122,13 @@ namespace SimuShell
                 if (arrayargs[1].Contains("/")){writepath = arrayargs[1];}
                 else {writepath = currentdir + "/" + arrayargs[1];}
                 File.AppendAllText(writepath, arrayargs[0] + Environment.NewLine);
+            }
+            if (currentcommand.StartsWith("rm ")){
+                string rmpath;
+                string[] arrayargs = currentcommand.Split(' ');
+                if (arrayargs[1].Contains("/")){rmpath = arrayargs[1];}
+                else {rmpath = currentdir + "/" + arrayargs[1];}
+                File.Delete(rmpath);
             }
             Interpret();
         }
@@ -137,7 +150,7 @@ namespace SimuShell
             options[2] = "";
             for (int i = 0; i == 0;){
             Console.Clear();
-            PrintValues(options);
+            PrintArray(options);
             Console.Write("Select the number of the option you would like to change, or say exit to exit: ");
             string otc = Console.ReadLine();
             if (otc != "exit") {   
