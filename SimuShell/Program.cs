@@ -109,6 +109,14 @@ namespace SimuShell
                 Console.WriteLine(currentcommand.Replace("echo ", ""));
             }
             if (currentcommand == "settings"){SUCC_SET();}
+            if (currentcommand.StartsWith("append ")){
+                string writepath;
+                string twoargs = currentcommand.Replace("append ", "");
+                string[] arrayargs = twoargs.Split(' ');
+                if (arrayargs[1].Contains("/")){writepath = arrayargs[1];}
+                else {writepath = currentdir + "/" + arrayargs[1];}
+                File.AppendAllText(writepath, arrayargs[0] + Environment.NewLine);
+            }
             Interpret();
         }
         static void Main(){
