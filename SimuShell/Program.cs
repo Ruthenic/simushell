@@ -81,7 +81,7 @@ namespace SimuShell
                 if (currentdir.EndsWith("/")){currentdir = currentdir.Remove(currentdir.LastIndexOf("/"));}
                 if (currentdir == "") {currentdir = "/";}
                 publicdir = currentdir;
-                if (publicdir.StartsWith("/home/" + System.Environment.UserName.ToLowerInvariant())){publicdir = publicdir.Replace("/home/" + System.Environment.UserName.ToLowerInvariant(), "~");}
+                if (publicdir.StartsWith("/home/" + System.Environment.UserName)){publicdir = publicdir.Replace("/home/" + System.Environment.UserName.ToLowerInvariant(), "~");}
                 }
             }
             if (currentcommand.StartsWith("cat ")){
