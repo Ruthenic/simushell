@@ -46,22 +46,34 @@ namespace SimuShell
             if (currentcommand == "list" || currentcommand == "ls")
             {
                 int amountoflisted = 0;
+                string args = currentcommand.Replace("ls ", "");
                 string[] filesindir = Directory.GetFiles(currentdir);
                 string[] foldsindir = Directory.GetDirectories(currentdir);
                 foreach (string name in foldsindir)
                 {
                     string newname = name + "/";
-                    Console.Write(newname.PadRight(3 + newname.Length));
+                    
+                    Console.Write(newname.PadRight(45));
                     amountoflisted = amountoflisted + 1;
                     if (amountoflisted == 5){Console.WriteLine(""); amountoflisted = 0;}
                 }
                 foreach (string name in filesindir)
                 {
                     string newname = name;
-                    Console.Write(newname.PadRight(3 + newname.Length));
-                    amountoflisted = amountoflisted + 1;
-                    if (amountoflisted == 5){Console.WriteLine(""); amountoflisted = 0;}
-                
+                    string rawfilename = newname.Substring(newname.LastIndexOf("/") + 1);
+                    if (!args.Contains("-a")){
+                        Console.Write(newname.PadRight(45));
+                        amountoflisted = amountoflisted + 1;
+                        if (amountoflisted == 5){Console.WriteLine(""); amountoflisted = 0;}
+                    }
+                    else {
+                        if (rawfilename.StartsWith(".")){}
+                        else {
+                            Console.Write(newname.PadRight(45));
+                            amountoflisted = amountoflisted + 1;
+                            if (amountoflisted == 5){Console.WriteLine(""); amountoflisted = 0;}
+                        }
+                    }
                 }
             Console.WriteLine("");
             }
@@ -96,8 +108,18 @@ namespace SimuShell
                 string readpath = currentcommand.Replace("cat ", "");
                 if (readpath.Contains("/")){}
                 else {readpath = currentdir + "/" + readpath;}
-                string[] catline = System.IO.File.ReadAllLines(readpath);
-                PrintArray(catline);
+                if (!Directory.Exists(readpath)){
+                    try {
+                        string[] catline = System.IO.File.ReadAllLines(readpath);
+                        PrintArray(catline);
+                    }
+                    catch (FileNotFoundException) {
+                        Console.WriteLine("File not found bucko, you're on your own");
+                    }
+                }
+                else {
+                    Console.WriteLine("is a directory not a file you idiot");
+                }
             }
             if (currentcommand == "man")
             {
@@ -126,7 +148,7 @@ namespace SimuShell
                 else {writepath = currentdir + "/" + lastItem;}
                 foreach (var item in arrayargs)
                 {
-                    File.AppendAllText(writepath, item + Environment.NewLine);
+                    File.AppendAllText(writepath, item + " ");
                 }
             }
             if (currentcommand.StartsWith("rm ")){
@@ -138,6 +160,23 @@ namespace SimuShell
             }
             if (currentcommand.StartsWith("touch")){
 
+            }
+            if (currentcommand.StartsWith("wc ")){
+                string readpath;
+                int linecount = 0;
+                string twoargs = currentcommand.Replace("wc ", "");
+                List<string> arrayargs = twoargs.Split(' ').ToList();
+                string lastItem = arrayargs.Last();
+                arrayargs.Remove(arrayargs.Last());
+                if (lastItem.Contains("/")){readpath = lastItem;}
+                else {readpath = currentdir + "/" + lastItem;}
+                if (arrayargs.Contains("-l")){
+                    string[] readline = System.IO.File.ReadAllLines(readpath);
+                    foreach (string line in readline){
+                        linecount += 1;
+                    }
+                Console.WriteLine("lines: {0}", linecount);
+                }
             }
             Interpret();
         }
