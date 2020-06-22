@@ -162,8 +162,10 @@ namespace SimuShell
 
             }
             if (currentcommand.StartsWith("wc ")){
+                //counts lines, words, and chars in a text document depending on provided arguments
                 string readpath;
                 int linecount = 0;
+                int wordcount = 0;
                 string twoargs = currentcommand.Replace("wc ", "");
                 List<string> arrayargs = twoargs.Split(' ').ToList();
                 string lastItem = arrayargs.Last();
@@ -177,6 +179,17 @@ namespace SimuShell
                     }
                 Console.WriteLine("lines: {0}", linecount);
                 }
+                if (arrayargs.Contains("-w")){
+                    string[] readline = System.IO.File.ReadAllLines(readpath);
+                    foreach (string line in readline){
+                        char[] delimiters = new char[] {' ', '\r', '\n' };
+                        wordcount += line.Split(delimiters,StringSplitOptions.RemoveEmptyEntries).Length; //guess where this came from lol starts with `S`
+                    }
+                Console.WriteLine("words: {0}", wordcount);
+                }
+            }
+            if (currentcommand.StartsWith("overwrite")){
+                
             }
             Interpret();
         }
