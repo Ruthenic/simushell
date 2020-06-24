@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using SUCC;
+//by the words of my fellow coder: e
 
 namespace SimuShell
 {
@@ -18,11 +19,11 @@ namespace SimuShell
         {
             string currentcommand;
             //ask for command
-            Console.Write(publicdir);
-            Console.Write(" - admin@SimuShell");
-            Console.Write(">");
-            currentcommand = (Console.ReadLine());
-            CommandExec(currentcommand);
+            Console.Write(publicdir);           //create
+            Console.Write(" - admin@SimuShell");//prompt
+            Console.Write(">");                 // at beginning of line
+            currentcommand = Console.ReadLine();
+            CommandExec(currentcommand); //go to command execution
 
         }
 
@@ -44,6 +45,7 @@ namespace SimuShell
 
         public static void CommandExec(String currentcommand)
         {
+            //go through all possible commands, and if `currentcommand` matches any of them, execute them
             string prevpath = currentdir;
             if (currentcommand == "clear"){
                 Console.Clear();
@@ -54,7 +56,7 @@ namespace SimuShell
             }
 
             if (currentcommand == "list" || currentcommand == "ls"){
-                int amountoflisted = 0;
+                int amountoflisted = 0; //if listed variables hits 5, output a new line to avoid keeping all directories on one line
                 string args = currentcommand.Replace("ls ", "");
                 string[] filesindir = Directory.GetFiles(currentdir);
                 string[] foldsindir = Directory.GetDirectories(currentdir);
@@ -72,7 +74,7 @@ namespace SimuShell
                 foreach (string name in filesindir){
                     string newname = name;
                     string rawfilename = newname.Substring(newname.LastIndexOf("/") + 1);
-                    if (args.Contains("-a")){
+                    if (args.Contains("-a")){ //check to see if we display dotfiles
                         Console.Write(newname.PadRight(45));
                         amountoflisted = amountoflisted + 1;
                         if (amountoflisted == 5){
@@ -82,7 +84,7 @@ namespace SimuShell
                     }
                     else{
                         if (rawfilename.Trim().StartsWith(".")){
-                        }
+                        } //do not do anything if it starts with a dot
                         else{
                             Console.Write(newname.PadRight(45));
                             amountoflisted = amountoflisted + 1;
@@ -94,26 +96,28 @@ namespace SimuShell
                     }
                 }
 
-                Console.WriteLine("");
+                Console.WriteLine(""); //write new line to console
             }
 
             if (currentcommand.StartsWith("cd ")){
+                //imo this is still a mess even after a redo
                 string newpath = currentcommand.Replace("cd ", "");
-                string[] newpathar = newpath.Split('/');
+                string[] newpathar = newpath.Split('/'); //separate all directory names from eachother
                 foreach (string path in newpathar){
+                    //loop directory changing code for each directory if it is a hardpath, or just run once if it is relative
                     if (path == ""){
-                        break;
+                        break; //if path is not, break out of for loop
                     }
 
                     if (path == ".."){
                         currentdir = currentdir.Remove(currentdir.LastIndexOf("/"));
                     }
                     else if (path == "."){
-                    }
+                    } //do not change directory if we attempt to cd into .
                     else if (path == "~"){
-                        currentdir = "/home/" + System.Environment.UserName;
+                        currentdir = "/home/" + System.Environment.UserName; //if we attempt to cd into home with `~` then change directory to home + username of current user
                     }
-                    else{
+                    else{ //if no special cases are required that use a separate method, go into this code
                         string[] folders = Directory.GetDirectories(currentdir);
                         if (Array.Exists(folders, element => element.Contains(path))){
                             if (currentdir != "/"){
@@ -124,13 +128,13 @@ namespace SimuShell
                             }
                         }
                         else{
-                            Console.WriteLine("Not a valid directory");
+                            Console.WriteLine("Not a valid directory"); 
                             currentdir = prevpath;
                         }
                     }
 
                     if (currentdir.EndsWith("/")){
-                        currentdir = currentdir.Remove(currentdir.LastIndexOf("/"));
+                        currentdir = currentdir.Remove(currentdir.LastIndexOf("/")); // if ending with `/`, then remove it as it causes some issues with having double slashes (//) in path
                     }
 
                     if (currentdir == ""){
@@ -220,8 +224,9 @@ namespace SimuShell
                 if (File.Exists(rmpath) && !Directory.Exists(rmpath)){
                     File.Delete(rmpath);
                 }
+            }
 
-                if (currentcommand.StartsWith("touch ")){
+            if (currentcommand.StartsWith("touch ")){
                     string readpath;
                     string loc = currentcommand.Replace("touch ", "");
                     if (loc.Contains("/")){
@@ -237,83 +242,76 @@ namespace SimuShell
                     else{
                         Console.WriteLine("File already exists");
                     }
-                }
-
-                if (currentcommand.StartsWith("wc ")){
-                    //counts lines, words, and chars in a text document depending on provided arguments
-                    string readpath;
-                    int linecount = 0;
-                    int wordcount = 0;
-                    string twoargs = currentcommand.Replace("wc ", "");
-                    List<string> wcargs = twoargs.Split(' ').ToList();
-                    string lastItem = wcargs.Last();
-                    wcargs.Remove(wcargs.Last());
-                    if (lastItem.Contains("/")){
-                        readpath = lastItem;
-                    }
-                    else{
-                        readpath = currentdir + "/" + lastItem;
-                    }
-
-                    if (wcargs.Contains("-l")){
-                        string[] readline = System.IO.File.ReadAllLines(readpath);
-                        foreach (string line in readline){
-                            linecount += 1;
-                        }
-
-                        Console.WriteLine("lines: {0}", linecount);
-                    }
-
-                    if (wcargs.Contains("-w")){
-                        string[] readline = System.IO.File.ReadAllLines(readpath);
-                        foreach (string line in readline){
-                            char[] delimiters = new char[] {' ', '\r', '\n'};
-                            wordcount +=
-                                line.Split(delimiters, StringSplitOptions.RemoveEmptyEntries)
-                                    .Length; //guess where this came from lol starts with `S`
-                        }
-
-                        Console.WriteLine("words: {0}", wordcount);
-                    }
-                }
-
-                if (currentcommand.StartsWith("overwrite")){
-                    string readpath;
-                    string loc = currentcommand.Replace("touch ", "");
-                    if (loc.Contains("/")){
-                        readpath = loc;
-                    }
-                    else{
-                        readpath = currentdir + "/" + loc;
-                    }
-
-                    if (File.Exists(readpath)){
-                        System.IO.File.WriteAllText(readpath, "");
-                    }
-                    else{
-                        Console.WriteLine("File doesn't exist");
-                    }
-                }
-
-                Interpret();
             }
 
-        
+            if (currentcommand.StartsWith("wc ")){
+                //counts lines, words, and chars in a text document depending on provided arguments
+                string readpath;
+                int linecount = 0;
+                int wordcount = 0;
+                string twoargs = currentcommand.Replace("wc ", "");
+                List<string> wcargs = twoargs.Split(' ').ToList();
+                string lastItem = wcargs.Last();
+                wcargs.Remove(wcargs.Last());
+                if (lastItem.Contains("/")){
+                    readpath = lastItem;
+                }
+                else{
+                    readpath = currentdir + "/" + lastItem;
+                }
+
+                if (wcargs.Contains("-l")){
+                    string[] readline = System.IO.File.ReadAllLines(readpath);
+                    foreach (string line in readline){
+                        linecount += 1;
+                    }
+
+                    Console.WriteLine("lines: {0}", linecount);
+                }
+
+                if (wcargs.Contains("-w")){
+                    string[] readline = System.IO.File.ReadAllLines(readpath);
+                    foreach (string line in readline){
+                        char[] delimiters = new char[] {' ', '\r', '\n'};
+                        wordcount +=
+                            line.Split(delimiters, StringSplitOptions.RemoveEmptyEntries)
+                                .Length; //guess where this came from lol starts with `S`
+                    }
+
+                    Console.WriteLine("words: {0}", wordcount);
+                }
+            }
+
+            if (currentcommand.StartsWith("overwrite")){
+                string readpath;
+                string loc = currentcommand.Replace("touch ", "");
+                if (loc.Contains("/")){
+                    readpath = loc;
+                }
+                else{
+                    readpath = currentdir + "/" + loc;
+                }
+
+                if (File.Exists(readpath)){
+                    System.IO.File.WriteAllText(readpath, "");
+                }
+                else{
+                    Console.WriteLine("File doesn't exist");
+                }
+            }
+            Interpret();
         }
         static void Main()
         {
             //SUCC init pt. 2 electric boogaloo
             string pH = Config.Get("LOGGING", "on");
             pH = Config.Get("START-P", "on");
-            string if_START = Config.Get<string>("START-P");
-            if (if_START == "on"){
+            string if_START = Config.Get<string>("START-P"); //check for if we want a starting prompt
+            if (if_START == "on"){ 
                 Console.WriteLine("Welcome to SimuShell. Type 'man' for manual.");
-            }
-
-            // KEEP AT END, AFTER ANY SUCC INITIALIZATION
-            Interpret();
+            } //see above comment
+            Interpret(); //switch to `interpreter` (displays prompt and reads command)
         }
-
         static void SUCC_SET()
         {
             //TODO: Switch to using lists
@@ -327,9 +325,10 @@ namespace SimuShell
                 Console.Write("Select the number of the option you would like to change, or say exit to exit: ");
                 string otc = Console.ReadLine();
                 if (otc != "exit"){
+                    //check for boolean input from
                     Console.Write("on or off: ");
                     string vtcot = Console.ReadLine();
-                    if (vtcot == "on" || vtcot == "On"){
+                    if (vtcot.ToLower() == "on"){
                         if (otc == "1"){
                             Config.Set("LOGGING", "on");
                         }
@@ -339,7 +338,7 @@ namespace SimuShell
                         }
                     }
 
-                    if (vtcot == "off" || vtcot == "Off"){
+                    if (vtcot.ToLower() == "off"){
                         if (otc == "1"){
                             Config.Set("LOGGING", "off");
                         }
