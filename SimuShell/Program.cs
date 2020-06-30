@@ -205,10 +205,8 @@ namespace SimuShell
                 else{
                     writepath = currentdir + "/" + lastItem;
                 }
-
-                foreach (var item in arrayargs){
-                    File.AppendAllText(writepath, item + " ");
-                }
+                 File.AppendAllLines(writepath, arrayargs);
+                
             }
 
             if (currentcommand.StartsWith("rm ")){
@@ -222,7 +220,13 @@ namespace SimuShell
                 }
 
                 if (File.Exists(rmpath) && !Directory.Exists(rmpath)){
-                    File.Delete(rmpath);
+                    try{
+                        File.Delete(rmpath);
+                    }
+                    catch (UnauthorizedAccessException){
+                        Console.WriteLine("Not allowed to create or edit files, and/or access path '{0}': Authorization denied", rmpath);
+                    }
+                    
                 }
             }
 
@@ -237,7 +241,12 @@ namespace SimuShell
                     }
 
                     if (!File.Exists(readpath)){
-                        System.IO.File.WriteAllText(readpath, "");
+                        try{
+                            System.IO.File.WriteAllText(readpath, "");
+                        }
+                        catch (UnauthorizedAccessException){
+                            Console.WriteLine("Not allowed to create or edit files, and/or access path '{0}': Authorization denied", readpath);
+                        }
                     }
                     else{
                         Console.WriteLine("File already exists");
@@ -273,9 +282,7 @@ namespace SimuShell
                     string[] readline = System.IO.File.ReadAllLines(readpath);
                     foreach (string line in readline){
                         char[] delimiters = new char[] {' ', '\r', '\n'};
-                        wordcount +=
-                            line.Split(delimiters, StringSplitOptions.RemoveEmptyEntries)
-                                .Length; //guess where this came from lol starts with `S`
+                        wordcount += line.Split(delimiters, StringSplitOptions.RemoveEmptyEntries).Length; //guess where this came from lol starts with `S`
                     }
 
                     Console.WriteLine("words: {0}", wordcount);
@@ -284,19 +291,32 @@ namespace SimuShell
 
             if (currentcommand.StartsWith("overwrite")){
                 string readpath;
-                string loc = currentcommand.Replace("touch ", "");
-                if (loc.Contains("/")){
-                    readpath = loc;
+                string writeline = "";
+                string loc = currentcommand.Replace("overwrite ", "");
+                List<string> owargs = loc.Split(' ').ToList();
+                string lastItem = owargs.Last();
+                owargs.Remove(owargs.Last());
+                if (lastItem.Contains("/")){
+                    readpath = lastItem;
                 }
                 else{
-                    readpath = currentdir + "/" + loc;
+                    readpath = currentdir + "/" + lastItem;
                 }
 
+                foreach (var Word in owargs){
+                    writeline += Word + " ";
+                }
+                Console.WriteLine(writeline);
                 if (File.Exists(readpath)){
-                    System.IO.File.WriteAllText(readpath, "");
+                    try{
+                        System.IO.File.WriteAllText(readpath, writeline);
+                    }
+                    catch (UnauthorizedAccessException){
+                        Console.WriteLine("Not allowed to create or edit files, and/or access path '{0}': Authorization denied", readpath);
+                    }
                 }
                 else{
-                    Console.WriteLine("File doesn't exist");
+                    Console.WriteLine("File doesn't currently exist or path is inaccessible");
                 }
             }
             Interpret();
@@ -314,7 +334,6 @@ namespace SimuShell
         }
         static void SUCC_SET()
         {
-            //TODO: Switch to using lists
             string[] options = new string[3]; //index must be the amount of settings in array + 1 
             options[0] = "1. LOGGING - LOG ALL COMMANDS WRITTEN";
             options[1] = "2. START-P - SHOW PROMPT AT START OF APP";
@@ -356,3 +375,8 @@ namespace SimuShell
         }
     }
 }
+/*
+TODO:coalesce `touch` and 'overwrite' into one command
+TODO:Switch to using lists for options listing
+
+*/
