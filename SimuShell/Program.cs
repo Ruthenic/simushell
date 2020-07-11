@@ -321,6 +321,18 @@ namespace SimuShell
                     Console.WriteLine("File doesn't currently exist or path is inaccessible");
                 }
             }
+
+            if (Config.Get<string>("LOGGING") == "on"){
+                if (!File.Exists("/home/" + System.Environment.UserName + "/simushell-log.log")){
+                    File.Create("/home/" + System.Environment.UserName + "/simushell-log.log");
+                    Console.WriteLine("Debug print: Created log file..");
+                    Interpret();
+                }
+
+                string[] command = new string[1];
+                command[0] = currentcommand;
+                File.AppendAllLines("/home/" + System.Environment.UserName + "/simushell-log.log", command);
+            }
             Interpret();
         }
         static void Main()
@@ -336,10 +348,11 @@ namespace SimuShell
         }
         static void SUCC_SET()
         {
-            string[] options = new string[3]; //index must be the amount of settings in array + 1 
+            string[] options = new string[4]; //index must be the amount of settings in array + 1 
             options[0] = "1. LOGGING - LOG ALL COMMANDS WRITTEN";
             options[1] = "2. START-P - SHOW PROMPT AT START OF APP";
             options[2] = "";
+            options[3] = "";
             for (int i = 0; i == 0;){
                 Console.Clear();
                 PrintArray(options);
@@ -380,5 +393,6 @@ namespace SimuShell
 /*
 TODO:coalesce `touch` and 'overwrite' into one command
 TODO:Switch to using lists for options listing
+TODO:instead of using straight WriteLines for output, use a system similar to STDOUT on UNIX
 
 */
