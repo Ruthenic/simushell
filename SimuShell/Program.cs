@@ -3,7 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using SUCC;
-//by the words of my fellow coder: e
+
 
 namespace SimuShell
 {
@@ -29,6 +29,7 @@ namespace SimuShell
 
         public static void PrintArray(String[] myArr)
         {
+            //Prints an array's contents as one line for every entry
             foreach (String i in myArr){
                 Console.WriteLine(i);
             }
@@ -38,6 +39,7 @@ namespace SimuShell
 
         public static void printStringList(List<string> myList)
         {
+            //Same as PrintArray(), but for Lists
             foreach (string str in myList){
                 Console.WriteLine(str);
             }
@@ -47,7 +49,7 @@ namespace SimuShell
         {
             //go through all possible commands, and if `currentcommand` matches any of them, execute them
             string prevpath = currentdir;
-            if (currentcommand == "clear"){
+            if (currentcommand == "clear"){ 
                 Console.Clear();
             }
 
@@ -55,13 +57,13 @@ namespace SimuShell
                 Console.WriteLine(currentdir);
             }
 
-            if (currentcommand == "list" || currentcommand == "ls"){
+            if (currentcommand == "list" || currentcommand == "ls"){ //list all files and directories
                 int amountoflisted = 0; //if listed variables hits 5, output a new line to avoid keeping all directories on one line
                 string args = currentcommand.Replace("ls ", "");
                 string[] filesindir = Directory.GetFiles(currentdir);
                 string[] foldsindir = Directory.GetDirectories(currentdir);
                 foreach (string name in foldsindir){
-                    string newname = name + "/";
+                    string newname = name + "/"; //add slash to end of name to indicate directory
 
                     Console.Write(newname.PadRight(45));
                     amountoflisted = amountoflisted + 1;
@@ -85,7 +87,7 @@ namespace SimuShell
                     else{
                         if (rawfilename.Trim().StartsWith(".")){
                         } //do not do anything if it starts with a dot
-                        else{
+                        else{ //print the others files without dots
                             Console.Write(newname.PadRight(45));
                             amountoflisted = amountoflisted + 1;
                             if (amountoflisted == 5){
@@ -119,17 +121,17 @@ namespace SimuShell
                     }
                     else{ //if no special cases are required that use a separate method, go into this code
                         string[] folders = Directory.GetDirectories(currentdir);
-                        if (Array.Exists(folders, element => element.Contains(path))){
+                        if (Array.Exists(folders, element => element.Contains(path))){ //i just stole this from stackoverflow, but I imagine that it checks to see if the array 'folders' contains a folder
                             if (currentdir != "/"){
-                                currentdir = currentdir + "/" + path;
+                                currentdir = currentdir + "/" + path; //if we cd into a directory not in root do this
                             }
                             else{
-                                currentdir += path;
+                                currentdir += path; //otherwise do this
                             }
                         }
                         else{
                             Console.WriteLine("Not a valid directory"); 
-                            currentdir = prevpath;
+                            currentdir = prevpath; //if not a directory, then print that it isnt a valid directory and revert to old directory
                         }
                     }
 
@@ -138,12 +140,12 @@ namespace SimuShell
                     }
 
                     if (currentdir == ""){
-                        currentdir = "/";
+                        currentdir = "/"; //if there is no contents of your path (so you are in a location that does not exist), go to root
                     }
 
-                    publicdir = currentdir;
+                    publicdir = currentdir; //set directory we print to the current one
                     if (publicdir.StartsWith("/home/" + System.Environment.UserName)){
-                        publicdir = publicdir.Replace("/home/" + System.Environment.UserName.ToLowerInvariant(), "~");
+                        publicdir = publicdir.Replace("/home/" + System.Environment.UserName.ToLowerInvariant(), "~"); //replace home dir with '~', as is common in shells such as bash and fish (and UNIX in general)
                     }
                 }
             }
