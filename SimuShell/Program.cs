@@ -13,8 +13,11 @@ namespace SimuShell
         public static string currentdir = "/";
         public static string publicdir = currentdir;
         public static string path = "~/.tmp/simushell-cmd.log";
-
-
+        public static List<string> STDOUT = new List<string>(); //to add to STDOUT, use STDOUT.add(contents)
+        public static List<string> STDERR = new List<string>(); //to add to STDERR, use STDERR.add(contents)
+        public static List<string> STDALRT = new List<string>(); //to add to STDALRT, use STDALRT.add(contents)
+        //to print the contents, use printStringList(list)
+        
         static void Interpret()
         {
             string currentcommand;
@@ -24,7 +27,6 @@ namespace SimuShell
             Console.Write(">");                 // at beginning of line
             currentcommand = Console.ReadLine();
             CommandExec(currentcommand); //go to command execution
-
         }
 
         public static void PrintArray(String[] myArr)
@@ -49,6 +51,11 @@ namespace SimuShell
         {
             //go through all possible commands, and if `currentcommand` matches any of them, execute them
             string prevpath = currentdir;
+            if (currentcommand == "stdtest"){
+                STDOUT.Add("STDOUT prints to terminal!");
+                STDERR.Add("STDERR prints to terminal!");
+                STDALRT.Add("STDALRT pints to terminal!");
+            }
             if (currentcommand == "clear"){ 
                 Console.Clear();
             }
@@ -333,6 +340,12 @@ namespace SimuShell
                 command[0] = currentcommand;
                 File.AppendAllLines("/home/" + System.Environment.UserName + "/simushell-log.log", command);
             }
+            printStringList(STDOUT);
+            printStringList(STDERR);
+            printStringList(STDALRT);
+            STDOUT.Clear();
+            STDERR.Clear();
+            STDALRT.Clear();
             Interpret();
         }
         static void Main()
@@ -351,7 +364,7 @@ namespace SimuShell
             string[] options = new string[4]; //index must be the amount of settings in array + 1 
             options[0] = "1. LOGGING - LOG ALL COMMANDS WRITTEN";
             options[1] = "2. START-P - SHOW PROMPT AT START OF APP";
-            options[2] = "";
+            options[2] = "3. STDALRT - PRINT STDALRT";
             options[3] = "";
             for (int i = 0; i == 0;){
                 Console.Clear();
