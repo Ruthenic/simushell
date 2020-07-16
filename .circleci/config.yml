@@ -7,7 +7,7 @@ jobs:
       - checkout
       - run: dotnet build
       - run: ls
-      - store_bin_dir:
+      - store_artifacts:
           path: SimuShell/bin/Debug/netcoreapp3.1/
 
 workflows:
