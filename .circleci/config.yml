@@ -6,7 +6,7 @@ jobs:
     steps:
       - checkout
       - run: dotnet build
-      - run: /bin/bash
+      - run: ls
       #- store_bin:
           #path:
 workflows:
