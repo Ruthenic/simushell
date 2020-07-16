@@ -393,7 +393,7 @@ namespace SimuShell
 /*
 TODO:coalesce `touch` and 'overwrite' into one command
 TODO:Switch to using lists for options listing
-TODO:instead of using straight WriteLines for output, use a system similar to STDOUT on UNIX
+Working on TO-DO:instead of using straight WriteLines for output, use a system similar to STDOUT on UNIX (requires rewrite)
 TODO:improve logging functionality
 
 */
