@@ -171,11 +171,12 @@ namespace SimuShell
                         PrintArray(catline);
                     }
                     catch (FileNotFoundException){
-                        Console.WriteLine("File not found bucko, you're on your own");
+                        STDERR.Add("File not found bucko, you're on your own");
+                        
                     }
                 }
                 else{
-                    Console.WriteLine("is a directory not a file you idiot");
+                    STDERR.Add("is a directory not a file you idiot");
                 }
             }
 
@@ -195,7 +196,7 @@ namespace SimuShell
             } //the nice number
 
             if (currentcommand.StartsWith("echo ")){
-                Console.WriteLine(currentcommand.Replace("echo ", ""));
+                STDOUT.Add(currentcommand.Replace("echo ", ""));
             }
 
             if (currentcommand == "settings"){
@@ -214,7 +215,7 @@ namespace SimuShell
                 else{
                     writepath = currentdir + "/" + lastItem;
                 }
-                 File.AppendAllLines(writepath, arrayargs);
+                File.AppendAllLines(writepath, arrayargs);
                 
             }
 
@@ -340,6 +341,7 @@ namespace SimuShell
                 command[0] = currentcommand;
                 File.AppendAllLines("/home/" + System.Environment.UserName + "/simushell-log.log", command);
             }
+            string if_STDALRT = Config.Get<string>("START-P");
             printStringList(STDOUT);
             printStringList(STDERR);
             printStringList(STDALRT);
@@ -383,6 +385,9 @@ namespace SimuShell
                         if (otc == "2"){
                             Config.Set("START-P", "on");
                         }
+                        if (otc == "3"){
+                            Config.Set("STDALRT", "on");
+                        }
                     }
 
                     if (vtcot.ToLower() == "off"){
@@ -393,12 +398,16 @@ namespace SimuShell
                         if (otc == "2"){
                             Config.Set("START-P", "off");
                         }
-                    }
-                    else{
-                        Console.Clear();
-                        Interpret();
+                        if (otc == "3"){
+                            Config.Set("STDALRT", "off");
+                        }
                     }
                 }
+                else{
+                    Console.Clear();
+                    Interpret();
+                }
+                
             }
         }
     }
