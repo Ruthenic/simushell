@@ -56,6 +56,9 @@ namespace SimuShell
             if (currentcommand == "pwd"){
                 Console.WriteLine(currentdir);
             }
+            if (currentcommand == "discord"){
+                Console.WriteLine("Our discord is YaCoding Server! Check us out at https://discord.gg/4ez35Qs");
+            }
 
             if (currentcommand == "list" || currentcommand == "ls"){ //list all files and directories
                 int amountoflisted = 0; //if listed variables hits 5, output a new line to avoid keeping all directories on one line
