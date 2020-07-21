@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SUCC;
 /*
-Copyright (c) 2019 Charlie Poole, Rob Prouse
+Copyright (c) 2020 Ruthenic and all other contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
