@@ -23,3 +23,12 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: Test
       run: dotnet test --no-restore --verbosity normal
+      
+  artifacts:
+    runs-on: ubuntu-latest
+    steps:
+    - name: upload build
+      uses: actions/upload-artifact@v2
+      with:
+        name: Built Files
+        path: ./SimuShell/bin/Debug/netcoreapp3.1/*
