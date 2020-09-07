@@ -28,6 +28,8 @@ jobs:
           ls -al
           cd SimuShell
           ls -al
+          cd bin
+          ls -al
       
   artifacts:
     needs: build
@@ -37,4 +39,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: built_files
-        path: SimuShell/bin/Debug
+        path: SimuShell/bin
