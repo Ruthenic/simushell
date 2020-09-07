@@ -23,6 +23,9 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: Test
       run: dotnet test --no-restore --verbosity normal
+    - shell: bash
+      run: |
+          ls -al
       
   artifacts:
     needs: build
