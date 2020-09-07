@@ -26,6 +26,8 @@ jobs:
     - shell: bash
       run: |
           ls -al
+          cd SimuShell
+          ls -al
       
   artifacts:
     needs: build
