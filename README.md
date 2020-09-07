@@ -13,6 +13,3 @@ Give me a tester, and sure, I could try (afaik the Linux/Unix and macOS have the
 
 # Included Libraries
 SUCC by JimmyCushnie: https://github.com/JimmyCushnie/SUCC  
-
-# Related Things
-Discord Server: https://discord.gg/4ez35Qs
