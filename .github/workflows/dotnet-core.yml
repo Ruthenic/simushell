@@ -32,4 +32,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: built_files
-        path: ./SimuShell/bin/Debug/netcoreapp3.1/
+        path: SimuShell/bin/Debug/netcoreapp3.1/*/
