@@ -6,7 +6,7 @@ You have to run the program (for the time being) with either `dotnet run` in the
 
 # Windows?
 No.
-Due to the difference in directory structures, it would be tough to focus on supporting to operating systems at the same time, so we only support Linux for the time being.
+Due to the difference in directory structures, it would be tough to focus on supporting multiple operating systems at the same time, so we only support Linux for the time being.
 
 # macOS?
 Give me a tester, and sure, I could try (afaik the Linux/Unix and macOS have the same sort of layout, with drives and such)
